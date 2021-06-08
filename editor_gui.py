@@ -1,64 +1,73 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import font
 
-window=Tk()
+window=tk.Tk()
 
 # Canvas
-canvas1=Canvas()
+canvas1=tk.Canvas()
 canvas1.config(width='1280', height='720')
-line1=canvas1.create_line(290,60,290,720,fill='black',width=2, dash = (2,5))
-line2 = canvas1.create_line(0,60,1280,60, fill = 'black', width = 3)
+line1=canvas1.create_line(290,60,290,720,fill='#458588',width=2, dash = (2,5))
+line2 = canvas1.create_line(0,60,1280,60, fill = '#fb4934', width = 3)
 canvas1.pack()
 
 # Set Window Configurations
-window.title('Hello Python')
+defaultFont = font.nametofont("TkDefaultFont")
+defaultFont.configure(family="Noto Sans", size=11)
+window.title('Editor')
 window.geometry("1280x720")
-window.tk_setPalette(background="white")
+window.tk_setPalette(background="#282828", foreground="#ebdbb2")
 
 ### WIDGETS ###
 
 # Title
-Topic = Label(window, text="Student Marksheet", fg = "green", font = ("Times New Roman", 30))
+Topic = tk.Label(window, text="Student Marksheet", fg = "#b8bb26", font = ("Bahnschrift",30))
 Topic.place(x=500,y=10)
 
 # Name field
-Nam_lbl = Label(window, text="Student Name", fg = "black", font = ("Times New Roman", 10))
-Nam_lbl.place(x = 0, y = 130) 
+Nam_lbl = tk.Label(window, text="Student Name", font = ("Bahnschrift",15))
+Nam_lbl.place(x = 82, y = 105) 
 
-Nam_txt = Entry(window, bd = 5)
-Nam_txt.place(x = 100, y = 130)
+Nam_txt = tk.Entry(window, bd = 2)
+Nam_txt.place(x = 60, y = 130)
+
+# Header
+marks_lbl = tk.Label(window, text="Marks scored in:", font=("Bahnschrift",20))
+marks_lbl.place(x=380, y=125)
 
 # Subject-wise
-Phy_lbl = Label(window, text ="Marks scored in Physics", fg = "black", font = ("Times New Roman",10))
-Phy_lbl.place(x=360,y=200)
+Phy_lbl = tk.Label(window, text ="Physics")
+Phy_lbl.place(x=520,y=200)
 
-Che_lbl = Label(window, text ="Marks scored in Chemistry", fg = "black", font = ("Times New Roman",10))
-Che_lbl.place(x=360,y=250)
+Che_lbl = tk.Label(window, text ="Chemistry")
+Che_lbl.place(x=520,y=250)
 
-Mat_lbl = Label(window, text ="Marks scored in Maths", fg = "black", font = ("Times New Roman",10))
-Mat_lbl.place(x=360,y=300)
+Mat_lbl = tk.Label(window, text ="Maths")
+Mat_lbl.place(x=520,y=300)
 
-Cs_lbl =  Label(window, text ="Marks scored in CS", fg = "black", font = ("Times New Roman",10))
-Cs_lbl.place(x=360,y=350)
+Cs_lbl =  tk.Label(window, text ="CS")
+Cs_lbl.place(x=520,y=350)
 
-Eng_lbl = Label(window, text ="Marks scored in English", fg = "black", font = ("Times New Roman",10))
-Eng_lbl.place(x=360,y=400)
+Eng_lbl = tk.Label(window, text ="English")
+Eng_lbl.place(x=520,y=400)
 
 
 # Inputs for each subject
-Phy_txt = Entry(window, bd = 5)
-Phy_txt.place(x=510, y = 200)
+Phy_txt = tk.Entry(window, bd = 2)
+Phy_txt.place(x=610, y = 200)
 
-Che_txt = Entry(window, bd = 5)
-Che_txt.place(x=510, y = 250)
+Che_txt = tk.Entry(window, bd = 2)
+Che_txt.place(x=610, y = 250)
 
-Mat_txt = Entry(window, bd = 5)
-Mat_txt.place(x=510, y = 300)
+Mat_txt = tk.Entry(window, bd = 2)
+Mat_txt.place(x=610, y = 300)
 
-Cs_txt = Entry(window, bd = 5)
-Cs_txt.place(x=510, y = 350)
+Cs_txt = tk.Entry(window, bd = 2)
+Cs_txt.place(x=610, y = 350)
 
-Eng_txt = Entry(window, bd = 5)
-Eng_txt.place(x=510, y = 400)
+Eng_txt = tk.Entry(window, bd = 2)
+Eng_txt.place(x=610, y = 400)
 
 
 window.mainloop()
+
+
