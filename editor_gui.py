@@ -21,7 +21,7 @@ window.tk_setPalette(background="#282828", foreground="#ebdbb2")
 
 # Title
 Topic = tk.Label(window, text="Student Marksheet", fg = "#b8bb26", font = ("Bahnschrift",30))
-Topic.place(x=500,y=10)
+Topic.place(x=475,y=29)
 
 # Student Personal Info
 Data_lbl = tk.Label(window, text="Student Data:", font = ("Bahnschrift",20))
