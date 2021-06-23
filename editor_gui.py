@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import font
+from tkinter import*
+
 
 window=tk.Tk()
 
@@ -79,6 +81,27 @@ Cs_txt.place(x=480, y = 350)
 Eng_txt = tk.Entry(window, bd = 2)
 Eng_txt.place(x=480, y = 400)
 
+#Drop-Down Menu
+
+Standard = Label(window, text = "Standard", font = ("Times New Roman", 13))
+Standard.place(x = 30, y = 380)
+Section = Label(window, text = "Section", font = ("Times New Roman", 13))
+Section.place(x = 30, y = 430)
+
+options1 = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"]
+options2 = ['A','B','C','D','E','F','G','H','I','J','K']
+
+clicked1= StringVar()
+clicked1.set("")
+
+clicked2 = StringVar()
+clicked2.set("")
+
+drop1 = OptionMenu(window, clicked1, *options1)
+drop1.place(x = 100, y = 380)
+
+drop2 = OptionMenu(window, clicked2, *options2)
+drop2.place(x = 100, y= 430)
 
 window.mainloop()
 
