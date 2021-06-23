@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import*
+import tkinter
 
 
 window=tk.Tk()
@@ -10,6 +11,7 @@ canvas1=tk.Canvas()
 canvas1.config(width='1280', height='720')
 line1=canvas1.create_line(290,60,290,720,fill='#458588',width=2, dash = (2,5))
 line2 = canvas1.create_line(0,60,1280,60, fill = '#fb4934', width = 3)
+line3 = canvas1.create_line(870, 60, 870, 720, fill = '#458588', width = 2, dash = (2,5))
 canvas1.pack()
 
 # Set Window Configurations
@@ -65,13 +67,88 @@ Female.place(x = 90, y = 520)
 marks_lbl = tk.Label(window, text="Academic Data:", font=("Bahnschrift",20))
 marks_lbl.place(x=380, y=125)
 
+
+#Defining function for command button
+
+Phy, Che, Mat, Bio, His, Civ, Geo, Eco, Hin, Eng, Comp, Sports, Psy, Biotech   = IntVar(),IntVar(),IntVar(), \
+IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(), IntVar(), IntVar(), IntVar()
+
+
+def input_marks():
+    if (Phy.get() == 1) and (Che.get() == 1) and (Mat.get() == 1) and (Comp.get() == 1) and (Eng.get() == 1):
+        Phy_lbl = tk.Label(window, text ="Marks in Physics")
+        Phy_lbl.place(x=900,y=200)
+
+        Che_lbl = tk.Label(window, text ="Marks in Chemistry")
+        Che_lbl.place(x=900,y=250)
+        
+        Mat_lbl = tk.Label(window, text ="Marks in Maths")
+        Mat_lbl.place(x=900,y=300)
+        
+        Cs_lbl =  tk.Label(window, text ="Marks in CS")
+        Cs_lbl.place(x=900,y=350)
+        
+        Eng_lbl = tk.Label(window, text ="Marks in English")
+        Eng_lbl.place(x=900,y=400)
+        
+        
+        Phy_txt = tk.Entry(window, bd = 2)  
+        Phy_txt.place(x=1030, y = 200)
+        
+        Che_txt = tk.Entry(window, bd = 2)
+        Che_txt.place(x=1030, y = 250)
+        
+        Mat_txt = tk.Entry(window, bd = 2)
+        Mat_txt.place(x=1030, y = 300)
+        
+        Cs_txt = tk.Entry(window, bd = 2)
+        Cs_txt.place(x=1030, y = 350)
+        
+        Eng_txt = tk.Entry(window, bd = 2)
+        Eng_txt.place(x=1030, y = 400)
+
+    elif (Phy.get()==1) and (Che.get() == 1) and (Bio.get() == 1) and (Biotech.get() == 1) and (Eng.get() == 1):
+        Phy_lbl = tk.Label(window, text ="Marks in Physics")
+        Phy_lbl.place(x=900,y=200)
+
+        Che_lbl = tk.Label(window, text ="Marks in Chemistry")
+        Che_lbl.place(x=900,y=250)
+        
+        Bio_lbl = tk.Label(window, text ="Marks in Biology")
+        Bio_lbl.place(x=900,y=300)
+        
+        Psy_lbl =  tk.Label(window, text ="Marks in BioTech")
+        Psy_lbl.place(x=900,y=350)
+        
+        Eng_lbl = tk.Label(window, text ="Marks in English")
+        Eng_lbl.place(x=900,y=400)
+        
+        
+        Phy_txt = tk.Entry(window, bd = 2)  
+        Phy_txt.place(x=1030, y = 200)
+        
+        Che_txt = tk.Entry(window, bd = 2)
+        Che_txt.place(x=1030, y = 250)
+        
+        Bio_txt = tk.Entry(window, bd = 2)
+        Bio_txt.place(x=1030, y = 300)
+        
+        Psy_txt = tk.Entry(window, bd = 2)
+        Psy_txt.place(x=1030, y = 350)
+        
+        Eng_txt = tk.Entry(window, bd = 2)
+        Eng_txt.place(x=1030, y = 400)
+
+
+
+Cmd_Btn = Button(text = "Enter scored Marks", command = input_marks, bg = 'black')
+Cmd_Btn.place(x = 420, y = 530)    
+
+
 # Subject-wise CheckButtons
 
 Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
-Selectedsub_frame.place(x = 350, y = 200,width= 250, height = 240)
-
-Phy, Che, Mat, Bio, His, Civ, Geo, Eco, Hin, Eng = IntVar(),IntVar(),IntVar(),IntVar(),IntVar(), \
-IntVar(),IntVar(),IntVar(),IntVar(),IntVar()
+Selectedsub_frame.place(x = 350, y = 200,width= 250, height = 300)
 
 Phy_Check = Checkbutton(Selectedsub_frame, text = "Physics", variable=Phy, onvalue=1, offvalue=0, selectcolor="black")
 Phy_Check.place(x = 2, y= 0)
@@ -93,6 +170,16 @@ Hin_Check = Checkbutton(Selectedsub_frame, text = "Hindi", variable=Hin, onvalue
 Hin_Check.place(x = 130, y= 120)
 Eng_Check = Checkbutton(Selectedsub_frame, text = "English", variable=Eng, onvalue=1, offvalue=0, selectcolor="black")
 Eng_Check.place(x = 130, y= 160)
+Comp_Check = Checkbutton(Selectedsub_frame, text = "Computer Sc.", variable=Comp, onvalue=1, offvalue=0, selectcolor="black")
+Comp_Check.place(x = 2, y = 200)
+Sports_Check = Checkbutton(Selectedsub_frame, text = "Physical Ed.", variable=Sports, onvalue=1, offvalue=0, selectcolor="black")
+Sports_Check.place(x = 130, y = 200)
+Psy_Check = Checkbutton(Selectedsub_frame, text = "Psychology", variable=Psy, onvalue=1, offvalue=0, selectcolor="black")
+Psy_Check.place(x = 2, y = 240)
+Biotech_Check = Checkbutton(Selectedsub_frame, text = "BioTech", variable=Biotech, onvalue=1, offvalue=0, selectcolor="black")
+Biotech_Check.place(x = 130, y = 240)
+
+
 
 
 #Drop-Down Menu
