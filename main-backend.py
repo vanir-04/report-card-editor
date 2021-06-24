@@ -1,6 +1,8 @@
 import mysql.connector
 import getpass
 
+# Ask for password
+
 askpwd = 0
 
 while askpwd == 0:
@@ -11,8 +13,12 @@ while askpwd == 0:
     except:
         print("Try again.")
 
+# Create cursors
+
 cur = db.cursor(buffered=True)
 cur2 = db.cursor()
+
+# Check for existence of database and create it if not found
 
 cur.execute("SHOW DATABASES;")
 
@@ -34,6 +40,8 @@ else:
     print("Database Created!")
     cur.execute("USE report_card_db;")
 
+# Check for existence of tables and create them if not found
+
 cur.execute("SHOW TABLES;")
 cur2.execute("USE report_card_db;")
 
@@ -44,7 +52,7 @@ aca_exist = False
 exam_exist = False
 
 for i in cur:
-    if 'subject' in i:
+    if 'subjects' in i:
         sub_exist = True    
     elif 'class' in i:
         class_exist = True
@@ -62,7 +70,7 @@ y = 0
 while y <= 4:
     if sub_exist != True:
         print("Subjects table not found, creating...")
-        cur2.execute("CREATE TABLE subject(SubjectID int, Name varchar(255), Description varchar(255));")
+        cur2.execute("CREATE TABLE subjects(SubjectID int AUTO_INCREMENT, Name varchar(255), PRIMARY KEY (SubjectID));")
         print("Subjects table created.")
         sub_exist = True
         y = y + 1
@@ -74,13 +82,13 @@ while y <= 4:
         y = y + 1
     elif stu_exist != True:
         print("Student table not found, creating...")
-        cur2.execute("CREATE TABLE student(StudentID int, AdmissionNo varchar(255), Name varchar(255), DOB date);")
+        cur2.execute("CREATE TABLE student(StudentID int AUTO_INCREMENT, AdmissionNo varchar(255), Name varchar(255), DOB date, PRIMARY KEY (StudentID));")
         print("Student table created.")
         stu_exist = True
         y = y + 1
     elif aca_exist != True:
         print("Academics table not found, creating...")
-        cur2.execute("CREATE TABLE academics(AcademicID int, StudentID int, ClassID int, SubjectID int, RollNo int);")
+        cur2.execute("CREATE TABLE academics(AcademicID int AUTO_INCREMENT, StudentID int, ClassID int, SubjectID int, RollNo int, PRIMARY KEY (AcademicID));")
         print("Academics table created.")
         aca_exist = True
         y = y + 1
@@ -93,5 +101,8 @@ while y <= 4:
     else:
         print("All tables found.")
         break
-    
-    
+else:
+    print("All tables found.")
+
+
+
