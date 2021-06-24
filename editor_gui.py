@@ -76,7 +76,7 @@ var1.set(' ')
 
 
 
-Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
+Selectedsub_frame = LabelFrame(window, text = "Streams Chosen", font = ("Times New Roman", 17))
 Selectedsub_frame.place(x = 350, y = 200,width= 190, height = 250)
 
 Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor="black")
