@@ -67,118 +67,109 @@ Female.place(x = 90, y = 520)
 marks_lbl = tk.Label(window, text="Academic Data:", font=("Bahnschrift",20))
 marks_lbl.place(x=380, y=125)
 
-
-#Defining function for command button
-
-Phy, Che, Mat, Bio, His, Civ, Geo, Eco, Hin, Eng, Comp, Sports, Psy, Biotech   = IntVar(),IntVar(),IntVar(), \
-IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(),IntVar(), IntVar(), IntVar(), IntVar()
+#Streams and Optionals
+var1 = IntVar()
+var1.set(' ') 
 
 
-def input_marks():
-    if (Phy.get() == 1) and (Che.get() == 1) and (Mat.get() == 1) and (Comp.get() == 1) and (Eng.get() == 1):
-        Phy_lbl = tk.Label(window, text ="Marks in Physics")
-        Phy_lbl.place(x=900,y=200)
-
-        Che_lbl = tk.Label(window, text ="Marks in Chemistry")
-        Che_lbl.place(x=900,y=250)
-        
-        Mat_lbl = tk.Label(window, text ="Marks in Maths")
-        Mat_lbl.place(x=900,y=300)
-        
-        Cs_lbl =  tk.Label(window, text ="Marks in CS")
-        Cs_lbl.place(x=900,y=350)
-        
-        Eng_lbl = tk.Label(window, text ="Marks in English")
-        Eng_lbl.place(x=900,y=400)
-        
-        
-        Phy_txt = tk.Entry(window, bd = 2)  
-        Phy_txt.place(x=1030, y = 200)
-        
-        Che_txt = tk.Entry(window, bd = 2)
-        Che_txt.place(x=1030, y = 250)
-        
-        Mat_txt = tk.Entry(window, bd = 2)
-        Mat_txt.place(x=1030, y = 300)
-        
-        Cs_txt = tk.Entry(window, bd = 2)
-        Cs_txt.place(x=1030, y = 350)
-        
-        Eng_txt = tk.Entry(window, bd = 2)
-        Eng_txt.place(x=1030, y = 400)
-
-    elif (Phy.get()==1) and (Che.get() == 1) and (Bio.get() == 1) and (Biotech.get() == 1) and (Eng.get() == 1):
-        Phy_lbl = tk.Label(window, text ="Marks in Physics")
-        Phy_lbl.place(x=900,y=200)
-
-        Che_lbl = tk.Label(window, text ="Marks in Chemistry")
-        Che_lbl.place(x=900,y=250)
-        
-        Bio_lbl = tk.Label(window, text ="Marks in Biology")
-        Bio_lbl.place(x=900,y=300)
-        
-        Psy_lbl =  tk.Label(window, text ="Marks in BioTech")
-        Psy_lbl.place(x=900,y=350)
-        
-        Eng_lbl = tk.Label(window, text ="Marks in English")
-        Eng_lbl.place(x=900,y=400)
-        
-        
-        Phy_txt = tk.Entry(window, bd = 2)  
-        Phy_txt.place(x=1030, y = 200)
-        
-        Che_txt = tk.Entry(window, bd = 2)
-        Che_txt.place(x=1030, y = 250)
-        
-        Bio_txt = tk.Entry(window, bd = 2)
-        Bio_txt.place(x=1030, y = 300)
-        
-        Psy_txt = tk.Entry(window, bd = 2)
-        Psy_txt.place(x=1030, y = 350)
-        
-        Eng_txt = tk.Entry(window, bd = 2)
-        Eng_txt.place(x=1030, y = 400)
+# Subject-wise CheckButons
 
 
-
-Cmd_Btn = Button(text = "Enter scored Marks", command = input_marks, bg = 'black')
-Cmd_Btn.place(x = 420, y = 530)    
-
-
-# Subject-wise CheckButtons
 
 Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
-Selectedsub_frame.place(x = 350, y = 200,width= 250, height = 300)
+Selectedsub_frame.place(x = 350, y = 200,width= 190, height = 250)
 
-Phy_Check = Checkbutton(Selectedsub_frame, text = "Physics", variable=Phy, onvalue=1, offvalue=0, selectcolor="black")
-Phy_Check.place(x = 2, y= 0)
-Che_Check = Checkbutton(Selectedsub_frame, text = "Chemistry", variable=Che, onvalue=1, offvalue=0, selectcolor="black")
-Che_Check.place(x = 2, y= 40)
-Mat_Check = Checkbutton(Selectedsub_frame, text = "Maths", variable=Mat, onvalue=1, offvalue=0, selectcolor="black")
-Mat_Check.place(x = 2, y= 80)
-Bio_Check = Checkbutton(Selectedsub_frame, text = "Biology", variable=Bio, onvalue=1, offvalue=0, selectcolor="black")
-Bio_Check.place(x = 2, y= 120)
-His_Check = Checkbutton(Selectedsub_frame, text = "History", variable=His, onvalue=1, offvalue=0, selectcolor="black")
-His_Check.place(x = 2, y= 160)
-Civ_Check = Checkbutton(Selectedsub_frame, text = "Civics", variable=Civ, onvalue=1, offvalue=0, selectcolor="black")
-Civ_Check.place(x = 130, y= 0)
-Geo_Check = Checkbutton(Selectedsub_frame, text = "Geography", variable=Geo, onvalue=1, offvalue=0, selectcolor="black")
-Geo_Check.place(x = 130, y= 40)
-Eco_Check = Checkbutton(Selectedsub_frame, text = "Economics", variable=Eco, onvalue=1, offvalue=0, selectcolor="black")
-Eco_Check.place(x = 130, y= 80)
-Hin_Check = Checkbutton(Selectedsub_frame, text = "Hindi", variable=Hin, onvalue=1, offvalue=0, selectcolor="black")
-Hin_Check.place(x = 130, y= 120)
-Eng_Check = Checkbutton(Selectedsub_frame, text = "English", variable=Eng, onvalue=1, offvalue=0, selectcolor="black")
-Eng_Check.place(x = 130, y= 160)
-Comp_Check = Checkbutton(Selectedsub_frame, text = "Computer Sc.", variable=Comp, onvalue=1, offvalue=0, selectcolor="black")
-Comp_Check.place(x = 2, y = 200)
-Sports_Check = Checkbutton(Selectedsub_frame, text = "Physical Ed.", variable=Sports, onvalue=1, offvalue=0, selectcolor="black")
-Sports_Check.place(x = 130, y = 200)
-Psy_Check = Checkbutton(Selectedsub_frame, text = "Psychology", variable=Psy, onvalue=1, offvalue=0, selectcolor="black")
-Psy_Check.place(x = 2, y = 240)
-Biotech_Check = Checkbutton(Selectedsub_frame, text = "BioTech", variable=Biotech, onvalue=1, offvalue=0, selectcolor="black")
-Biotech_Check.place(x = 130, y = 240)
+Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor="black")
+Science_Math.place(x = 2, y= 0)
+Science_Bio = Radiobutton(Selectedsub_frame, text = "PCB", variable=var1, value = 2, selectcolor="black")
+Science_Bio.place(x = 2, y= 40)
+Science_Math_Bio = Radiobutton(Selectedsub_frame, text = "PCMB", variable=var1, value = 3, selectcolor="black")
+Science_Math_Bio.place(x = 2, y= 80)
+Humanity = Radiobutton(Selectedsub_frame, text = "Humanities", variable=var1, value = 4, selectcolor="black")
+Humanity.place(x = 2, y= 120)
+Comm = Radiobutton(Selectedsub_frame, text = "Commerce", variable=var1,value = 5, selectcolor="black")
+Comm.place(x = 2, y = 160)
 
+
+#Optional Subject Chosen
+Optional_Frame = LabelFrame(window, text = "Optional Subject", font = ("Times New Roman", 17))
+Optional_Frame.place(x = 600, y = 200, width = 200, height = 220)
+
+
+
+
+var2 = IntVar()
+var2.set(' ')
+
+Comp_Radiobutton = Radiobutton( text = "Computer Sc.", variable=var2, value = 1, selectcolor="black")
+Sports_Radiobutton = Radiobutton( text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
+Psy_Radiobutton = Radiobutton( text = "Psychology", variable=var2, value = 3, selectcolor="black")
+Eco_Radiobutton = Radiobutton( text = "Economics", variable=var2, value = 4, selectcolor="black")
+Biotech_Radiobutton = Radiobutton( text = "BioTech", variable=var2, value = 3, selectcolor="black")
+Mat_Radiobutton = Radiobutton( text = "Maths", variable=var2, value = 1, selectcolor="black")
+
+#Defining Optional_Button
+def Optional_Selection():
+    if var1.get() == 1:
+        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Sc.", variable=var2, value = 1, selectcolor="black")
+        Comp_Radiobutton.pack()
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton.pack()
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 3, selectcolor="black")
+        Psy_Radiobutton.pack()
+        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
+        Eco_Radiobutton.pack()
+    elif var1.get() == 2:
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 1, selectcolor="black")
+        Sports_Radiobutton.pack()
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
+        Psy_Radiobutton.pack()
+        Biotech_Radiobutton = Radiobutton(Optional_Frame, text = "BioTech", variable=var2, value = 3, selectcolor="black")
+        Biotech_Radiobutton.pack()
+        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
+        Eco_Radiobutton.pack()
+    elif var1.get() == 3:
+        No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects \n for PCMB", font = ('Times New Roman', 13))
+        No_Optional_lbl.place(x = 15, y = 70)
+    elif var1.get() == 4:
+        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 1, selectcolor="black")
+        Mat_Radiobutton.pack()
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton.pack()
+    elif var1.get() == 5:
+        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Sc.", variable=var2, value = 3, selectcolor="black")
+        Comp_Radiobutton.pack()
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 4, selectcolor="black")
+        Sports_Radiobutton.pack()
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 5, selectcolor="black")
+        Psy_Radiobutton.pack()
+
+        
+
+
+#Cmd_Function
+Cmd_Btn = Button(text = "Select Optional Subjects", bg = 'black', command = Optional_Selection)
+Cmd_Btn.place(x = 450, y = 480)  
+
+
+#Reset Button
+def reset():
+    var.set(' ')
+    var1.set(' ')
+    var2.set(' ')
+    FirstNam_txt.delete(0, END)
+    LastNam_txt.delete(0, END)
+    Adm_txt.delete(0, END)
+    Roll_txt.delete(0, END)
+    clicked1.set('')
+    clicked2.set('')
+    for Widget in Optional_Frame.winfo_children():
+        Widget.destroy()
+    
+        
+            
+
+reset_btn = Button(window, text = 'Reset Entries', command = reset, bg = 'black').place( x= 490, y = 550)
 
 
 
@@ -206,5 +197,3 @@ drop2.place(x = 210, y= 420)
 
 
 window.mainloop()
-
-
