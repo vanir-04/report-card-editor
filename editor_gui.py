@@ -162,8 +162,8 @@ Standard.place(x = 20, y = 420)
 Section = Label(window, text = "Section", font = ("Times New Roman", 13))
 Section.place(x = 150, y = 420)
 
-options1 = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"]
-options2 = ['A','B','C','D','E','F','G','H','I','J','K']
+options1 = ["XI","XII"]
+options2 = ['A','B','C','D','E','F','G']
 
 clicked1= StringVar()
 clicked1.set("")
