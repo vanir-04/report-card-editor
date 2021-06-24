@@ -143,6 +143,7 @@ def Optional_Selection():
         Sports_Radiobutton.pack()
         Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 5, selectcolor="black")
         Psy_Radiobutton.pack()
+    Cmd_Btn.configure(state=DISABLED)
 
         
 
@@ -163,6 +164,7 @@ def reset():
     Roll_txt.delete(0, END)
     clicked1.set('')
     clicked2.set('')
+    Cmd_Btn.configure(state = NORMAL)
     for Widget in Optional_Frame.winfo_children():
         Widget.destroy()
     
