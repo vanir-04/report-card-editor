@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import*
-import tkinter
-
 
 window=tk.Tk()
 
@@ -66,6 +64,8 @@ Female.place(x = 90, y = 520)
 # Header
 marks_lbl = tk.Label(window, text="Academic Data:", font=("Bahnschrift",20))
 marks_lbl.place(x=380, y=125)
+Input_Marks_lbl = tk.Label(window, text="Enter Marks:", font=("Bahnschrift",20))
+Input_Marks_lbl.place(x=960, y=125)
 
 #Streams and Optionals
 var1 = IntVar()
@@ -129,20 +129,22 @@ def Optional_Selection():
         Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
         Eco_Radiobutton.pack()
     elif var1.get() == 3:
-        No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects \n for PCMB", font = ('Times New Roman', 13))
-        No_Optional_lbl.place(x = 15, y = 70)
+        No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects", font = ('Times New Roman', 13))
+        No_Optional_lbl.place(x = 5, y = 10)
+        No_Optional_Radiobutton = Radiobutton(Optional_Frame, text = "Please Select the Button", variable=var2, value = 1, selectcolor="black" )
+        No_Optional_Radiobutton.place(x = 1, y = 50)   
     elif var1.get() == 4:
-        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 1, selectcolor="black")
+        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 1, selectcolor="black")
         Mat_Radiobutton.pack()
         Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
         Sports_Radiobutton.pack()
     elif var1.get() == 5:
-        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Sc.", variable=var2, value = 3, selectcolor="black")
-        Comp_Radiobutton.pack()
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 4, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 1, selectcolor="black")
         Sports_Radiobutton.pack()
-        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 5, selectcolor="black")
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
         Psy_Radiobutton.pack()
+        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 3, selectcolor="black")
+        Mat_Radiobutton.pack()
     Cmd_Btn.configure(state=DISABLED)
 
         
@@ -151,29 +153,7 @@ def Optional_Selection():
 #Cmd_Function
 Cmd_Btn = Button(text = "Select Optional Subjects", bg = 'black', command = Optional_Selection)
 Cmd_Btn.place(x = 450, y = 480)  
-
-
-#Reset Button
-def reset():
-    var.set(' ')
-    var1.set(' ')
-    var2.set(' ')
-    FirstNam_txt.delete(0, END)
-    LastNam_txt.delete(0, END)
-    Adm_txt.delete(0, END)
-    Roll_txt.delete(0, END)
-    clicked1.set('')
-    clicked2.set('')
-    Cmd_Btn.configure(state = NORMAL)
-    for Widget in Optional_Frame.winfo_children():
-        Widget.destroy()
-    
-        
-            
-
-reset_btn = Button(window, text = 'Reset Entries', command = reset, bg = 'black').place( x= 490, y = 550)
-
-
+         
 
 #Drop-Down Menu
 
@@ -196,6 +176,191 @@ drop1.place(x = 86, y =420)
 
 drop2 = OptionMenu(window, clicked2, *options2)
 drop2.place(x = 210, y= 420)
+
+
+Academic_Frame = LabelFrame(window,text = "Marks Attained", font = ("Times New Roman", 17))
+Academic_Frame.place(x = 900, y = 200, width = 270, height = 350) 
+
+#Marksheet Coding
+def Marksheet():
+    lbl4 = tk.Label(Academic_Frame, text = "English")
+    lbl4.place(x = 20, y =250)
+    txt1 = tk.Entry(Academic_Frame, bd = 2)  
+    txt1.place(x=110, y = 50)
+    txt2 = tk.Entry(Academic_Frame, bd = 2)
+    txt2.place(x=110, y = 100)
+    txt3 = tk.Entry(Academic_Frame, bd = 2)
+    txt3.place(x=110, y = 150)
+    txt4 = tk.Entry(Academic_Frame, bd = 2)
+    txt4.place(x=110, y = 200)
+    txt5 = tk.Entry(Academic_Frame, bd = 2)
+    txt5.place(x=110, y = 250)
+    
+    if var1.get() == 1 and var2.get() == 1:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="CS")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 1 and var2.get() == 2:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 1 and var2.get() == 3:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Psychology")
+        lbl5.place(x=20,y=200)
+    
+    elif var1.get() == 1 and var2.get() == 4:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Economics")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 2 and var2.get() == 1:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Biology")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5.place(x=20,y=200)
+    
+    elif var1.get() == 2 and var2.get() == 2:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Biology")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Psychology")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 2 and var2.get() == 3:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Biology")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="BioTech")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 2 and var2.get() == 4:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Biology")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Economics")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 3 and var2.get() == 1:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Biology")
+        lbl5.place(x=20,y=200)
+    
+    elif var1.get() == 4 and  var2.get() == 1:
+        lbl1 = tk.Label(Academic_Frame, text ="History")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Political Sc.")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Geography")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Economics")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 4 and var2.get() == 2:
+        lbl1 = tk.Label(Academic_Frame, text ="History")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Political Sc.")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Geography")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 5 and var2.get() == 1:
+        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Economics")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 5 and var2.get() == 2:
+        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Economics")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Psychology")
+        lbl5.place(x=20,y=200)
+    
+    elif var1.get() == 5 and var2.get() == 3:
+        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Economics")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Maths")
+        lbl5.place(x=20,y=200)
+
+
+    
+Marks_Btn = Button(window, text = "Click to Input Marks", command = Marksheet,bg = 'black')
+Marks_Btn.place(x = 960, y = 600)
+        
+#Reset Button
+def reset():
+    var.set(' ')
+    var1.set(' ')
+    var2.set(' ')
+    FirstNam_txt.delete(0, END)
+    LastNam_txt.delete(0, END)
+    Adm_txt.delete(0, END)
+    Roll_txt.delete(0, END)
+    clicked1.set('')
+    clicked2.set('')
+
+    for Widget in Academic_Frame.winfo_children():
+        Widget.destroy()
+
+    Cmd_Btn.configure(state = NORMAL)
+    for Widget in Optional_Frame.winfo_children():
+        Widget.destroy()
+        
+reset_btn = Button(window, text = 'Reset Entries', command = reset, bg = 'black').place( x= 490, y = 600)
 
 
 window.mainloop()
