@@ -188,7 +188,7 @@ drop2.place(x = 210, y= 420)
 
 
 Academic_Frame = LabelFrame(window,text = "Marks Attained", font = ("Times New Roman", 17))
-Academic_Frame.place(x = 900, y = 200, width = 270, height = 350) 
+Academic_Frame.place(x = 970, y = 200, width = 270, height = 350) 
 
 #Marksheet Coding
 def Marksheet():
