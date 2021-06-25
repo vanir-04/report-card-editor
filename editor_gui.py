@@ -17,7 +17,7 @@ canvas1.pack()
 
 # Set Window Configurations
 defaultFont = font.nametofont("TkDefaultFont")
-defaultFont.configure(family="Noto Sans", size=11)
+defaultFont.configure(family="Tw Cen MT", size=12)
 window.title('Editor')
 window.geometry("1280x720")
 window.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -79,7 +79,7 @@ var1.set(' ')
 
 
 
-Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
+Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Bahnschrift", 16))
 Selectedsub_frame.place(x = 350, y = 200,width= 190, height = 250)
 
 Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor = "#282828")
@@ -95,7 +95,7 @@ Comm.place(x = 2, y = 160)
 
 
 #Optional Subject Chosen
-Optional_Frame = LabelFrame(window, text = "Optional Subject", font = ("Times New Roman", 17))
+Optional_Frame = LabelFrame(window, text = "Optional Subject", font = ("Bahnschrift", 16))
 Optional_Frame.place(x = 600, y = 200, width = 200, height = 220)
 
 
@@ -134,7 +134,7 @@ def Optional_Selection():
         Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor = "#282828")
         Commercial_Radiobutton.pack()
     elif var1.get() == 3:
-        No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects", font = ('Times New Roman', 13))
+        No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects")
         No_Optional_lbl.place(x = 5, y = 10)
         No_Optional_Radiobutton = Radiobutton(Optional_Frame, text = "Please Select the Button", variable=var2, value = 1, selectcolor = "#282828" )
         No_Optional_Radiobutton.place(x = 1, y = 50)   
@@ -169,9 +169,9 @@ Cmd_Btn.place(x = 450, y = 480)
 
 #Drop-Down Menu
 
-Standard = Label(window, text = "Standard", font = ("Times New Roman", 13))
+Standard = Label(window, text = "Standard")
 Standard.place(x = 20, y = 420)
-Section = Label(window, text = "Section", font = ("Times New Roman", 13))
+Section = Label(window, text = "Section")
 Section.place(x = 150, y = 420)
 
 options1 = ["XI","XII"]
@@ -190,7 +190,7 @@ drop2 = OptionMenu(window, clicked2, *options2)
 drop2.place(x = 210, y= 420)
 
 
-Academic_Frame = LabelFrame(window,text = "Marks Attained", font = ("Times New Roman", 17))
+Academic_Frame = LabelFrame(window,text = "Marks Attained", font = ("Bahnschrift", 16))
 Academic_Frame.place(x = 970, y = 200, width = 270, height = 350) 
 
 #Marksheet Coding
