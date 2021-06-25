@@ -1,17 +1,19 @@
 import mysql.connector
 import getpass
 
-# Ask for password
+def login():
+    askpwd = 0
 
-askpwd = 0
+    while askpwd == 0:
+        pwd = getpass.getpass('Please enter your password: ')
+        try:
+            global db
+            db = mysql.connector.connect(host='localhost', user='root', password=pwd)
+            askpwd = 1
+        except:
+            print("Try again.")
 
-while askpwd == 0:
-    pwd = getpass.getpass('Please enter your password: ')
-    try:
-        db = mysql.connector.connect(host='localhost', user='root', password=pwd)
-        askpwd = 1
-    except:
-        print("Try again.")
+login()
 
 # Create cursors
 
