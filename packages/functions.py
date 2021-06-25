@@ -1,6 +1,10 @@
 import mysql.connector
 from tkinter import *
 
+## Functions used in the program ##
+
+# Login function used to log in to the MySQL database before the application starts #
+
 def login():
     from tkinter import font
 

@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import font
-from tkinter import*
+from tkinter import *
+import packages.functions
+
+packages.functions.login()
 
 window=tk.Tk()
 
@@ -8,8 +11,8 @@ window=tk.Tk()
 canvas1=tk.Canvas()
 canvas1.config(width='1280', height='720')
 line1=canvas1.create_line(290,60,290,720,fill='#458588',width=2, dash = (2,5))
-line2 = canvas1.create_line(0,60,1280,60, fill = '#fb4934', width = 3)
-line3 = canvas1.create_line(870, 60, 870, 720, fill = '#458588', width = 2, dash = (2,5))
+line2 = canvas1.create_line(870, 60, 870, 720, fill = '#458588', width = 2, dash = (2,5))
+line3 = canvas1.create_line(0,60,1280,60, fill = '#fb4934', width = 3)
 canvas1.pack()
 
 # Set Window Configurations
@@ -55,10 +58,10 @@ var.set(' ')
 
 Gender_lbl = tk.Label(window, text = "Gender")
 Gender_lbl.place(x = 30, y = 510)
-Male = Radiobutton(window, text ="Male",variable = var, value = 1, selectcolor= "black")
+Male = Radiobutton(window, text ="Male",variable = var, value = 1, selectcolor = "#282828")
 Male.place(x = 90, y = 500)
 
-Female = Radiobutton(window, text = "Female",variable = var, value = 2, selectcolor = "black")
+Female = Radiobutton(window, text = "Female",variable = var, value = 2, selectcolor = "#282828")
 Female.place(x = 90, y = 520)
 
 # Header
@@ -79,15 +82,15 @@ var1.set(' ')
 Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
 Selectedsub_frame.place(x = 350, y = 200,width= 190, height = 250)
 
-Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor="black")
+Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor = "#282828")
 Science_Math.place(x = 2, y= 0)
-Science_Bio = Radiobutton(Selectedsub_frame, text = "PCB", variable=var1, value = 2, selectcolor="black")
+Science_Bio = Radiobutton(Selectedsub_frame, text = "PCB", variable=var1, value = 2, selectcolor = "#282828")
 Science_Bio.place(x = 2, y= 40)
-Science_Math_Bio = Radiobutton(Selectedsub_frame, text = "PCMB", variable=var1, value = 3, selectcolor="black")
+Science_Math_Bio = Radiobutton(Selectedsub_frame, text = "PCMB", variable=var1, value = 3, selectcolor = "#282828")
 Science_Math_Bio.place(x = 2, y= 80)
-Humanity = Radiobutton(Selectedsub_frame, text = "Humanities", variable=var1, value = 4, selectcolor="black")
+Humanity = Radiobutton(Selectedsub_frame, text = "Humanities", variable=var1, value = 4, selectcolor = "#282828")
 Humanity.place(x = 2, y= 120)
-Comm = Radiobutton(Selectedsub_frame, text = "Commerce", variable=var1,value = 5, selectcolor="black")
+Comm = Radiobutton(Selectedsub_frame, text = "Commerce", variable=var1,value = 5, selectcolor = "#282828")
 Comm.place(x = 2, y = 160)
 
 
@@ -101,55 +104,55 @@ Optional_Frame.place(x = 600, y = 200, width = 200, height = 220)
 var2 = IntVar()
 var2.set(' ')
 
-Comp_Radiobutton = Radiobutton( text = "Computer Science", variable=var2, selectcolor="black")
-Sports_Radiobutton = Radiobutton( text = "Physical Education", variable=var2, selectcolor="black")
-Psy_Radiobutton = Radiobutton( text = "Psychology", variable=var2, selectcolor="black")
-Eco_Radiobutton = Radiobutton( text = "Economics", variable=var2, selectcolor="black")
-Mat_Radiobutton = Radiobutton( text = "Maths", variable=var2, selectcolor="black")
-Commercial_Radiobutton = Radiobutton(text = "Commercial Arts", variable = var2, selectcolor= "black")
-Informatics_Radiobutton = Radiobutton(text = "Informatics Practices", variable = var2, selectcolor = 'black')
+Comp_Radiobutton = Radiobutton( text = "Computer Science", variable=var2, selectcolor = "#282828")
+Sports_Radiobutton = Radiobutton( text = "Physical Education", variable=var2, selectcolor = "#282828")
+Psy_Radiobutton = Radiobutton( text = "Psychology", variable=var2, selectcolor = "#282828")
+Eco_Radiobutton = Radiobutton( text = "Economics", variable=var2, selectcolor = "#282828")
+Mat_Radiobutton = Radiobutton( text = "Maths", variable=var2, selectcolor = "#282828")
+Commercial_Radiobutton = Radiobutton(text = "Commercial Arts", variable = var2, selectcolor = "#282828")
+Informatics_Radiobutton = Radiobutton(text = "Informatics Practices", variable = var2, selectcolor = '#282828')
 #Defining Optional_Button
 def Optional_Selection():
     if var1.get() == 1:
-        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Science", variable=var2, value = 1, selectcolor="black")
+        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Science", variable=var2, value = 1, selectcolor = "#282828")
         Comp_Radiobutton.pack()
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor = "#282828")
         Sports_Radiobutton.pack()
-        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 3, selectcolor="black")
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 3, selectcolor = "#282828")
         Psy_Radiobutton.pack()
-        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
+        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor = "#282828")
         Eco_Radiobutton.pack()
-        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 5, selectcolor= "black")
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 5, selectcolor = "#282828")
         Commercial_Radiobutton.pack()
     elif var1.get() == 2:
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor = "#282828")
         Sports_Radiobutton.pack()
-        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor = "#282828")
         Psy_Radiobutton.pack()
-        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 3, selectcolor="black")
+        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 3, selectcolor = "#282828")
         Eco_Radiobutton.pack()
-        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor= "black")
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor = "#282828")
         Commercial_Radiobutton.pack()
     elif var1.get() == 3:
         No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects", font = ('Times New Roman', 13))
         No_Optional_lbl.place(x = 5, y = 10)
-        No_Optional_Radiobutton = Radiobutton(Optional_Frame, text = "Please Select the Button", variable=var2, value = 1, selectcolor="black" )
+        No_Optional_Radiobutton = Radiobutton(Optional_Frame, text = "Please Select the Button", variable=var2, value = 1, selectcolor = "#282828" )
         No_Optional_Radiobutton.place(x = 1, y = 50)   
     elif var1.get() == 4:
-        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 1, selectcolor="black")
+        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 1, selectcolor = "#282828")
         Mat_Radiobutton.pack()
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor = "#282828")
         Sports_Radiobutton.pack()
-        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 3, selectcolor= "black")
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 3, selectcolor = "#282828")
         Commercial_Radiobutton.pack()
     elif var1.get() == 5:
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor = "#282828")
         Sports_Radiobutton.pack()
-        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
+        Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor = "#282828")
         Psy_Radiobutton.pack()
-        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 3, selectcolor="black")
+        Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 3, selectcolor = "#282828")
         Mat_Radiobutton.pack()
-        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor= "black")
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor = "#282828")
         Commercial_Radiobutton.pack()
         Informatics_Radiobutton = Radiobutton(Optional_Frame, text = "Informatics Practices", variable = var2, value = 5, selectcolor = 'black')
         Informatics_Radiobutton.pack()
@@ -160,7 +163,7 @@ def Optional_Selection():
 
 
 #Cmd_Function
-Cmd_Btn = Button(text = "Select Optional Subjects", bg = 'black', command = Optional_Selection)
+Cmd_Btn = Button(text = "Select Optional Subjects", command = Optional_Selection)
 Cmd_Btn.place(x = 450, y = 480)  
          
 
@@ -387,7 +390,7 @@ def Marksheet():
 
 
     
-Marks_Btn = Button(window, text = "Click to Input Marks", command = Marksheet,bg = 'black')
+Marks_Btn = Button(window, text = "Click to Input Marks", command = Marksheet)
 Marks_Btn.place(x = 960, y = 600)
         
 #Reset Button
@@ -409,7 +412,7 @@ def reset():
     for Widget in Optional_Frame.winfo_children():
         Widget.destroy()
         
-reset_btn = Button(window, text = 'Reset Entries', command = reset, bg = 'black').place( x= 490, y = 600)
+reset_btn = Button(window, text = 'Reset Entries', command = reset).place( x= 490, y = 600)
 
 
 window.mainloop()
