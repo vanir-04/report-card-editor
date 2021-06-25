@@ -1,5 +1,6 @@
 import mysql.connector
 from tkinter import *
+import getpass
 
 ## Functions used in the program ##
 
@@ -97,3 +98,15 @@ def login():
     create_btn.place(x=160,y=167)
 
     pwd_prompt.mainloop()
+
+def cli_login():
+
+    askpwd = 0
+    global db
+    while askpwd == 0:
+        pwd = getpass.getpass('Please enter your password: ')
+        try:
+            db = mysql.connector.connect(host='localhost', user='root', password=pwd)
+            askpwd = 1
+        except:
+            print("Try again.")
