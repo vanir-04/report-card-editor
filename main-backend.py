@@ -23,9 +23,10 @@ cur2 = db.cursor()
 cur.execute("SHOW DATABASES;")
 
 db_exist = False
+sub_exist, class_exist, stu_exist, aca_exist, exam_exist, section_exist = False, False, False, False, False, False
 
-for x in cur:
-    if 'report_card_db' in x:
+for i in cur:
+    if 'report_card_db' in i:
         db_exist = True
         break
     else:
@@ -45,11 +46,6 @@ else:
 cur.execute("SHOW TABLES;")
 cur2.execute("USE report_card_db;")
 
-sub_exist = False
-class_exist = False
-stu_exist = False
-aca_exist = False
-exam_exist = False
 
 for i in cur:
     if 'subjects' in i:
@@ -62,12 +58,14 @@ for i in cur:
         aca_exist = True
     elif 'exam' in i:
         exam_exist = True
+    elif 'sections' in i:
+        section_exist = True
     else:
         continue
 
 y = 0
 
-while y <= 4:
+while y <= 5:
     if sub_exist != True:
         print("Subjects table not found, creating...")
         cur2.execute("CREATE TABLE subjects(SubjectID int AUTO_INCREMENT, Name varchar(255), PRIMARY KEY (SubjectID));")
@@ -82,7 +80,7 @@ while y <= 4:
         y = y + 1
     elif stu_exist != True:
         print("Student table not found, creating...")
-        cur2.execute("CREATE TABLE student(StudentID int AUTO_INCREMENT, AdmissionNo varchar(255), Name varchar(255), DOB date, PRIMARY KEY (StudentID));")
+        cur2.execute("CREATE TABLE student(StudentID int AUTO_INCREMENT, AdmissionNo varchar(255), Name varchar(255), DOB date, Gender varchar(255), PRIMARY KEY (StudentID));")
         print("Student table created.")
         stu_exist = True
         y = y + 1
@@ -98,11 +96,55 @@ while y <= 4:
         print("Exam table created.")
         exam_exist = True
         y = y + 1
+    elif section_exist != True:
+        print("Sections table not found, creating...")
+        cur2.execute("CREATE TABLE sections(SectionID int AUTO_INCREMENT, Name varchar(255), PRIMARY KEY (SectionID));")
+        print("Sections table created.")
+        section_exist = True
     else:
         print("All tables found.")
         break
 else:
     print("All tables found.")
 
+# Add pre-existing data to the tables
 
+cur2.execute("DELETE FROM subjects;")
+cur2.execute("ALTER TABLE subjects AUTO_INCREMENT = 1;")
+cur2.execute("INSERT INTO subjects (Name)\
+    VALUES \
+        ('Accountancy'),\
+        ('Biology'),\
+        ('Business Studies'),\
+        ('Chemistry'),\
+        ('Commercial Arts'),\
+        ('Economics'),\
+        ('English'),\
+        ('Geography'),\
+        ('History'),\
+        ('Maths'),\
+        ('Physical Education'),\
+        ('Physics'),\
+        ('Political Science'),\
+        ('Psychology'),\
+        ('Informatics Practices'),\
+        ('Computer Science');")
 
+cur2.execute("DELETE FROM class;")
+cur2.execute("INSERT INTO class (ClassID, Name)\
+    VALUES \
+        (11, 'XI'),\
+        (12, 'XII');")
+
+cur2.execute("DELETE FROM sections;")
+cur2.execute("INSERT INTO sections (Name)\
+    VALUES \
+        ('A'),\
+        ('B'),\
+        ('C'),\
+        ('D'),\
+        ('E'),\
+        ('F'),\
+        ('G');")
+
+db.commit()
