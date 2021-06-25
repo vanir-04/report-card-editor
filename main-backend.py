@@ -1,24 +1,12 @@
-import mysql.connector
-import getpass
+from tkinter import *
+import packages.functions
 
-def login():
-    askpwd = 0
-
-    while askpwd == 0:
-        pwd = getpass.getpass('Please enter your password: ')
-        try:
-            global db
-            db = mysql.connector.connect(host='localhost', user='root', password=pwd)
-            askpwd = 1
-        except:
-            print("Try again.")
-
-login()
+packages.functions.login()
 
 # Create cursors
 
-cur = db.cursor(buffered=True)
-cur2 = db.cursor()
+cur = packages.functions.db.cursor(buffered=True)
+cur2 = packages.functions.db.cursor()
 
 # Check for existence of database and create it if not found
 
@@ -82,13 +70,13 @@ while y <= 5:
         y = y + 1
     elif stu_exist != True:
         print("Student table not found, creating...")
-        cur2.execute("CREATE TABLE student(StudentID int AUTO_INCREMENT, AdmissionNo varchar(255), Name varchar(255), DOB date, Gender varchar(255), PRIMARY KEY (StudentID));")
+        cur2.execute("CREATE TABLE student(StudentID int AUTO_INCREMENT, AdmissionNo varchar(255), Name varchar(255), RollNo int, Gender varchar(255), PRIMARY KEY (StudentID));")
         print("Student table created.")
         stu_exist = True
         y = y + 1
     elif aca_exist != True:
         print("Academics table not found, creating...")
-        cur2.execute("CREATE TABLE academics(AcademicID int AUTO_INCREMENT, StudentID int, ClassID int, SubjectID int, RollNo int, PRIMARY KEY (AcademicID));")
+        cur2.execute("CREATE TABLE academics(AcademicID int AUTO_INCREMENT, StudentID int, ClassID int, SubjectID int, PRIMARY KEY (AcademicID));")
         print("Academics table created.")
         aca_exist = True
         y = y + 1
@@ -149,4 +137,4 @@ cur2.execute("INSERT INTO sections (Name)\
         ('F'),\
         ('G');")
 
-db.commit()
+packages.functions.db.commit()
