@@ -76,7 +76,7 @@ var1.set(' ')
 
 
 
-Selectedsub_frame = LabelFrame(window, text = "Streams Chosen", font = ("Times New Roman", 17))
+Selectedsub_frame = LabelFrame(window, text = "Subjects studying", font = ("Times New Roman", 17))
 Selectedsub_frame.place(x = 350, y = 200,width= 190, height = 250)
 
 Science_Math = Radiobutton(Selectedsub_frame, text = "PCM", variable=var1, value = 1, selectcolor="black")
@@ -101,33 +101,35 @@ Optional_Frame.place(x = 600, y = 200, width = 200, height = 220)
 var2 = IntVar()
 var2.set(' ')
 
-Comp_Radiobutton = Radiobutton( text = "Computer Sc.", variable=var2, value = 1, selectcolor="black")
-Sports_Radiobutton = Radiobutton( text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
-Psy_Radiobutton = Radiobutton( text = "Psychology", variable=var2, value = 3, selectcolor="black")
-Eco_Radiobutton = Radiobutton( text = "Economics", variable=var2, value = 4, selectcolor="black")
-Biotech_Radiobutton = Radiobutton( text = "BioTech", variable=var2, value = 3, selectcolor="black")
-Mat_Radiobutton = Radiobutton( text = "Maths", variable=var2, value = 1, selectcolor="black")
-
+Comp_Radiobutton = Radiobutton( text = "Computer Science", variable=var2, selectcolor="black")
+Sports_Radiobutton = Radiobutton( text = "Physical Education", variable=var2, selectcolor="black")
+Psy_Radiobutton = Radiobutton( text = "Psychology", variable=var2, selectcolor="black")
+Eco_Radiobutton = Radiobutton( text = "Economics", variable=var2, selectcolor="black")
+Mat_Radiobutton = Radiobutton( text = "Maths", variable=var2, selectcolor="black")
+Commercial_Radiobutton = Radiobutton(text = "Commercial Arts", variable = var2, selectcolor= "black")
+Informatics_Radiobutton = Radiobutton(text = "Informatics Practices", variable = var2, selectcolor = 'black')
 #Defining Optional_Button
 def Optional_Selection():
     if var1.get() == 1:
-        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Sc.", variable=var2, value = 1, selectcolor="black")
+        Comp_Radiobutton = Radiobutton(Optional_Frame, text = "Computer Science", variable=var2, value = 1, selectcolor="black")
         Comp_Radiobutton.pack()
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor="black")
         Sports_Radiobutton.pack()
         Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 3, selectcolor="black")
         Psy_Radiobutton.pack()
         Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
         Eco_Radiobutton.pack()
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 5, selectcolor= "black")
+        Commercial_Radiobutton.pack()
     elif var1.get() == 2:
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 1, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor="black")
         Sports_Radiobutton.pack()
         Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
         Psy_Radiobutton.pack()
-        Biotech_Radiobutton = Radiobutton(Optional_Frame, text = "BioTech", variable=var2, value = 3, selectcolor="black")
-        Biotech_Radiobutton.pack()
-        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 4, selectcolor="black")
+        Eco_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 3, selectcolor="black")
         Eco_Radiobutton.pack()
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor= "black")
+        Commercial_Radiobutton.pack()
     elif var1.get() == 3:
         No_Optional_lbl = Label(Optional_Frame, text = "No Optional Subjects", font = ('Times New Roman', 13))
         No_Optional_lbl.place(x = 5, y = 10)
@@ -136,15 +138,22 @@ def Optional_Selection():
     elif var1.get() == 4:
         Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Economics", variable=var2, value = 1, selectcolor="black")
         Mat_Radiobutton.pack()
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 2, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 2, selectcolor="black")
         Sports_Radiobutton.pack()
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 3, selectcolor= "black")
+        Commercial_Radiobutton.pack()
     elif var1.get() == 5:
-        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Ed.", variable=var2, value = 1, selectcolor="black")
+        Sports_Radiobutton = Radiobutton(Optional_Frame, text = "Physical Education", variable=var2, value = 1, selectcolor="black")
         Sports_Radiobutton.pack()
         Psy_Radiobutton = Radiobutton(Optional_Frame, text = "Psychology", variable=var2, value = 2, selectcolor="black")
         Psy_Radiobutton.pack()
         Mat_Radiobutton = Radiobutton(Optional_Frame, text = "Maths", variable=var2, value = 3, selectcolor="black")
         Mat_Radiobutton.pack()
+        Commercial_Radiobutton = Radiobutton(Optional_Frame, text = "Commercial Arts", variable = var2, value = 4, selectcolor= "black")
+        Commercial_Radiobutton.pack()
+        Informatics_Radiobutton = Radiobutton(Optional_Frame, text = "Informatics Practices", variable = var2, value = 5, selectcolor = 'black')
+        Informatics_Radiobutton.pack()
+    
     Cmd_Btn.configure(state=DISABLED)
 
         
@@ -186,15 +195,15 @@ def Marksheet():
     lbl4 = tk.Label(Academic_Frame, text = "English")
     lbl4.place(x = 20, y =250)
     txt1 = tk.Entry(Academic_Frame, bd = 2)  
-    txt1.place(x=110, y = 50)
+    txt1.place(x=150, y = 50, height = 20, width = 80)
     txt2 = tk.Entry(Academic_Frame, bd = 2)
-    txt2.place(x=110, y = 100)
+    txt2.place(x=150, y = 100, height = 20, width = 80)
     txt3 = tk.Entry(Academic_Frame, bd = 2)
-    txt3.place(x=110, y = 150)
+    txt3.place(x=150, y = 150, height = 20, width = 80)
     txt4 = tk.Entry(Academic_Frame, bd = 2)
-    txt4.place(x=110, y = 200)
+    txt4.place(x=150, y = 200, height = 20, width = 80)
     txt5 = tk.Entry(Academic_Frame, bd = 2)
-    txt5.place(x=110, y = 250)
+    txt5.place(x=150, y = 250, height = 20, width = 80)
     
     if var1.get() == 1 and var2.get() == 1:
         lbl1 = tk.Label(Academic_Frame, text ="Physics")
@@ -203,7 +212,7 @@ def Marksheet():
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Maths")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="CS")
+        lbl5 =  tk.Label(Academic_Frame, text ="Computer Science")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 1 and var2.get() == 2:
@@ -213,7 +222,7 @@ def Marksheet():
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Maths")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Education")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 1 and var2.get() == 3:
@@ -235,6 +244,16 @@ def Marksheet():
         lbl3.place(x=20,y=150)
         lbl5 =  tk.Label(Academic_Frame, text ="Economics")
         lbl5.place(x=20,y=200)
+    
+    elif var1.get() == 1 and var2.get() == 5:
+        lbl1 = tk.Label(Academic_Frame, text ="Physics")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Chemistry")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Maths")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Commercial Arts")
+        lbl5.place(x=20,y=200)
 
     elif var1.get() == 2 and var2.get() == 1:
         lbl1 = tk.Label(Academic_Frame, text ="Physics")
@@ -243,7 +262,7 @@ def Marksheet():
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Biology")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Education")
         lbl5.place(x=20,y=200)
     
     elif var1.get() == 2 and var2.get() == 2:
@@ -263,7 +282,7 @@ def Marksheet():
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Biology")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="BioTech")
+        lbl5 =  tk.Label(Academic_Frame, text ="Economics")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 2 and var2.get() == 4:
@@ -273,7 +292,7 @@ def Marksheet():
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Biology")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="Economics")
+        lbl5 =  tk.Label(Academic_Frame, text ="Commercial Arts")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 3 and var2.get() == 1:
@@ -289,7 +308,7 @@ def Marksheet():
     elif var1.get() == 4 and  var2.get() == 1:
         lbl1 = tk.Label(Academic_Frame, text ="History")
         lbl1.place(x=20,y=50)
-        lbl2 = tk.Label(Academic_Frame, text ="Political Sc.")
+        lbl2 = tk.Label(Academic_Frame, text ="Political Science")
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Geography")
         lbl3.place(x=20,y=150)
@@ -299,27 +318,37 @@ def Marksheet():
     elif var1.get() == 4 and var2.get() == 2:
         lbl1 = tk.Label(Academic_Frame, text ="History")
         lbl1.place(x=20,y=50)
-        lbl2 = tk.Label(Academic_Frame, text ="Political Sc.")
+        lbl2 = tk.Label(Academic_Frame, text ="Political Science")
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Geography")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Education")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 4 and var2.get() == 3:
+        lbl1 = tk.Label(Academic_Frame, text ="History")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Political Science")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Geography")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Commercial Arts")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 5 and var2.get() == 1:
-        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1 = tk.Label(Academic_Frame, text ="Accountancy")
         lbl1.place(x=20,y=50)
-        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2 = tk.Label(Academic_Frame, text ="Business Studies")
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Economics")
         lbl3.place(x=20,y=150)
-        lbl5 =  tk.Label(Academic_Frame, text ="Physical Ed.")
+        lbl5 =  tk.Label(Academic_Frame, text ="Physical Education")
         lbl5.place(x=20,y=200)
 
     elif var1.get() == 5 and var2.get() == 2:
-        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1 = tk.Label(Academic_Frame, text ="Accountancy")
         lbl1.place(x=20,y=50)
-        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2 = tk.Label(Academic_Frame, text ="Business Studies")
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Economics")
         lbl3.place(x=20,y=150)
@@ -327,13 +356,33 @@ def Marksheet():
         lbl5.place(x=20,y=200)
     
     elif var1.get() == 5 and var2.get() == 3:
-        lbl1 = tk.Label(Academic_Frame, text ="Accounts")
+        lbl1 = tk.Label(Academic_Frame, text ="Accountancy")
         lbl1.place(x=20,y=50)
-        lbl2 = tk.Label(Academic_Frame, text ="Business St.")
+        lbl2 = tk.Label(Academic_Frame, text ="Business Studies")
         lbl2.place(x=20,y=100)
         lbl3 = tk.Label(Academic_Frame, text ="Economics")
         lbl3.place(x=20,y=150)
         lbl5 =  tk.Label(Academic_Frame, text ="Maths")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 5 and var2.get() == 4:
+        lbl1 = tk.Label(Academic_Frame, text ="Accountancy")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Business Studies")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Economics")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Commercial Arts")
+        lbl5.place(x=20,y=200)
+
+    elif var1.get() == 5 and var2.get() == 5:
+        lbl1 = tk.Label(Academic_Frame, text ="Accountancy")
+        lbl1.place(x=20,y=50)
+        lbl2 = tk.Label(Academic_Frame, text ="Business Studies")
+        lbl2.place(x=20,y=100)
+        lbl3 = tk.Label(Academic_Frame, text ="Economics")
+        lbl3.place(x=20,y=150)
+        lbl5 =  tk.Label(Academic_Frame, text ="Informatics Practices")
         lbl5.place(x=20,y=200)
 
 
