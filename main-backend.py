@@ -1,8 +1,7 @@
 from tkinter import *
 import packages.functions
 
-#packages.functions.login()
-packages.functions.cli_login()
+packages.functions.login()
 
 # Create cursors
 
