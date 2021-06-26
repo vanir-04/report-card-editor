@@ -117,7 +117,7 @@ def cli_login():
         except:
             print("Try again.")
 
-# Creates a list with subjects from the database
+# Creates a list with data from the database
 
 def master_lists():
     cur = db.cursor(buffered=True)
@@ -142,15 +142,3 @@ def master_lists():
 
     for i in cur:
         sectionlist.append(i)
-
-def getmarks():
-    subject = subvar.get()
-    marks = marks_obt.get()
-    totalmarks = total_mks.get()
-    date = date_inp.get()
-    exam = exam_text.get()
-
-    cur = db.cursor(buffered=True)
-
-    cur.execute("USE report_card_db;")
-
