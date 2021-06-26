@@ -105,20 +105,20 @@ cur2.execute("INSERT INTO subjects (Name)\
     VALUES \
         ('Accountancy'),\
         ('Biology'),\
-        ('Business Studies'),\
+        ('Business-Studies'),\
         ('Chemistry'),\
-        ('Commercial Arts'),\
+        ('Commercial-Arts'),\
         ('Economics'),\
         ('English'),\
         ('Geography'),\
         ('History'),\
         ('Maths'),\
-        ('Physical Education'),\
+        ('Physical-Education'),\
         ('Physics'),\
-        ('Political Science'),\
+        ('Political-Science'),\
         ('Psychology'),\
-        ('Informatics Practices'),\
-        ('Computer Science');")
+        ('Informatics-Practices'),\
+        ('Computer-Science');")
 
 cur2.execute("DELETE FROM class;")
 cur2.execute("INSERT INTO class (ClassID, Name)\
