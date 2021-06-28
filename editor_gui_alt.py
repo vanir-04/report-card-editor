@@ -53,10 +53,6 @@ def studentsubmit():
 def acasubmit():
     def close():
         popup.destroy()
-    def close2():
-        popup2.destroy()
-
-    global studentid, year, classid, sectionid, rollno
 
     admno = str(adm_txt.get())
     classname_raw = classvar.get()
@@ -100,51 +96,20 @@ def acasubmit():
         sectionid_raw = str(i)
     sectionid = sectionid_raw.strip('(),')
 
-    print(subjectid)
-    print(marks)
-    print(totalmarks)
-    print(year)
-    print(exam)
+    sem_fail_integ = False
+    sem_fail_prog = False
+    mark_fail_integ = False
+    mark_fail_prog = False
 
     try:
         cur.execute('INSERT INTO academics (StudentID, Year, ClassID, SectionID, RollNo, SubjectID) VALUES ('+studentid+', '+year+', '+classid+', '+sectionid+', '+rollno+', '+subjectid+');')
         packages.functions.db.commit()
-        print("Commit into academics successful.")
-        popup= Tk()
-        popup.iconbitmap("assets/success.ico")
-        popup.geometry("255x150+572+340")
-        popup.title("Success!")
-        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        success = Label(popup, text="Data added successfully", font=("Bahnschrift", 14), fg="#b8bb26")
-        success.place(x=0,y=25)
-
-        okbutton = Button(popup, text="Ok", command=close, width=10)
-        okbutton.place(x=85,y=90)
+        sem_fail_integ = False
+        sem_fail_prog = False
     except IntegrityError:
-        popup = Tk()
-        popup.iconbitmap("assets/error.ico")
-        popup.geometry("255x150+572+340")
-        popup.title("Error!")
-        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
-        error.place(x=8,y=25)
-
-        okbutton = Button(popup, text="Ok", command=close, width=10)
-        okbutton.place(x=85,y=90)
+        sem_fail_integ = True
     except ProgrammingError:
-        popup = Tk()
-        popup.iconbitmap("assets/error.ico")
-        popup.geometry("255x150+572+340")
-        popup.title("Error!")
-        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
-        error.place(x=27,y=20)
-
-        okbutton = Button(popup, text="Ok", command=close, width=10)
-        okbutton.place(x=85,y=90)
+        sem_fail_prog = True
     finally:
         cur.execute('ALTER TABLE academics AUTO_INCREMENT=1')
 
@@ -164,20 +129,66 @@ def acasubmit():
     try:
         cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
         packages.functions.db.commit()
+        mark_fail_integ = False
+        mark_fail_prog = False
     except IntegrityError:
-        popup2 = Tk()
-        popup2.iconbitmap("assets/error.ico")
-        popup2.geometry("255x150+572+340")
-        popup2.title("Error!")
-        popup2.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        error = Label(popup2, text="Marks record already exists", font=("Bahnschrift", 15), fg="#fb4934")
-        error.place(x=8,y=25)
-
-        okbutton = Button(popup2, text="Ok", command=close2, width=10)
-        okbutton.place(x=85,y=90)
+        mark_fail_integ = True
+    except ProgrammingError:
+        mark_fail_prog = True
     finally:
         cur.execute('ALTER TABLE exam AUTO_INCREMENT=1')
+
+    if sem_fail_prog == False and mark_fail_prog == False and sem_fail_integ == False and mark_fail_integ == False:
+        popup= Tk()
+        popup.iconbitmap("assets/success.ico")
+        popup.geometry("255x150+572+340")
+        popup.title("Success!")
+        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        success = Label(popup, text="Data added successfully", font=("Bahnschrift", 14), fg="#b8bb26")
+        success.place(x=0,y=25)
+
+        okbutton = Button(popup, text="Ok", command=close, width=10)
+        okbutton.place(x=85,y=90)
+
+    elif sem_fail_integ == True and mark_fail_integ == True:
+        popup = Tk()
+        popup.iconbitmap("assets/error.ico")
+        popup.geometry("255x150+572+340")
+        popup.title("Error!")
+        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
+        error.place(x=8,y=25)
+
+        okbutton = Button(popup, text="Ok", command=close, width=10)
+        okbutton.place(x=85,y=90)
+    elif sem_fail_integ == True and mark_fail_integ == False:
+        popup= Tk()
+        popup.iconbitmap("assets/success.ico")
+        popup.geometry("255x150+572+340")
+        popup.title("Success!")
+        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        success = Label(popup, text="Data added successfully", font=("Bahnschrift", 14), fg="#b8bb26")
+        success.place(x=0,y=25)
+
+        okbutton = Button(popup, text="Ok", command=close, width=10)
+        okbutton.place(x=85,y=90)
+    elif sem_fail_prog == True and mark_fail_prog == True:
+        popup = Tk()
+        popup.iconbitmap("assets/error.ico")
+        popup.geometry("255x150+572+340")
+        popup.title("Error!")
+        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
+        error.place(x=27,y=20)
+
+        okbutton = Button(popup, text="Ok", command=close, width=10)
+        okbutton.place(x=85,y=90)
+    else:
+        print("There a bug nigga fix it")
 
 
 packages.functions.master_lists()
