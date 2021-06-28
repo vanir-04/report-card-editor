@@ -200,7 +200,7 @@ window.iconbitmap("assets/edit.ico")
 
 # Canvas
 canvas1 = Canvas()
-canvas1.config(width='1366', height='768')
+canvas1.config(width='1280', height='720')
 line1 = canvas1.create_line(290,60,290,768,fill='#458588',width=2, dash = (2,5))
 line2 = canvas1.create_line(0,60,1366,60, fill = '#fb4934', width = 3)
 canvas1.pack()
@@ -209,7 +209,7 @@ canvas1.pack()
 defaultFont = font.nametofont("TkDefaultFont")
 defaultFont.configure(family="Tw Cen MT", size=13)
 window.title('Editor')
-window.geometry("1366x768+30+30")
+window.geometry("1280x720+30+30")
 window.tk_setPalette(background="#282828", foreground="#ebdbb2")
 bg = "#282828"
 fg = "#ebdbb2"
@@ -327,6 +327,6 @@ submit_btn = Button(window, text="Submit", command=acasubmit)
 submit_btn.place(x=577, y=345)
 
 tree = ttk.Treeview(window)
-tree.place(x=330, y=440)
+tree.place(x=330, y=400)
 
 window.mainloop()
