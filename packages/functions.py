@@ -61,7 +61,7 @@ def login():
         roothead = Label(rootpass, text="Please enter your MySQL root password", font=('Tw Cen MT', 11))
         roothead.place(x=1, y=10)
 
-        root_txt = Entry(rootpass, bd=1, show="*", selectbackground=fg, selectforeground=bg)
+        root_txt = Entry(rootpass, bd=1, show="*", selectbackground=fg, selectforeground=bg, justify='center')
         root_txt.place(x=63, y=50)
         create_acc_btn = Button(rootpass, text="Create User", font=('Tw Cen MT', 11), command=rootcheck)
         create_acc_btn.place(x=83, y=90)
@@ -83,12 +83,12 @@ def login():
 
     user_lbl = Label(pwd_prompt, text="Username")
     user_lbl.place(x=35, y=70)
-    user_txt = Entry(pwd_prompt, bd=1, selectbackground=fg, selectforeground=bg)
+    user_txt = Entry(pwd_prompt, bd=1, selectbackground=fg, selectforeground=bg, justify='center')
     user_txt.place(x=130, y=75)
 
     pwd_lbl = Label(pwd_prompt, text="Password")
     pwd_lbl.place(x=35, y=110)
-    pwd_txt = Entry(pwd_prompt, show="*", bd=1, selectbackground=fg, selectforeground=bg)
+    pwd_txt = Entry(pwd_prompt, show="*", bd=1, selectbackground=fg, selectforeground=bg, justify='center')
     pwd_txt.place(x=130, y=115)
 
     or_lbl = Label(pwd_prompt, text="or", font=("Tw Cen MT", 9))
@@ -142,3 +142,4 @@ def master_lists():
 
     for i in cur:
         sectionlist.append(i)
+
