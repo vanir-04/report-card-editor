@@ -206,7 +206,7 @@ window.iconbitmap("assets/edit.ico")
 # Canvas
 canvas1 = Canvas()
 canvas1.config(width='1280', height='720')
-line1 = canvas1.create_line(345,60,345,768,fill='#458588',width=2)
+line1 = canvas1.create_line(360,60,360,768,fill='#458588',width=2)
 line2 = canvas1.create_line(0,60,1366,60, fill = '#fb4934', width = 3)
 canvas1.pack()
 
@@ -232,99 +232,99 @@ acad_lbl = Label(window, text="Academic Data", font=("Bahnschrift",20))
 acad_lbl.place(x=575, y=125)
 
 data_lbl = Label(window, text="Student Data", font = ("Bahnschrift",20))
-data_lbl.place(x = 93, y = 125) 
+data_lbl.place(x = 103, y = 125) 
 
 ## STUDENT INFO ##
 
 # Student Details
 firstname_lbl = Label(window, text = "First Name")
-firstname_lbl.place(x = 50, y = 200)
+firstname_lbl.place(x = 65, y = 200)
 firstname_txt = Entry(window, selectbackground=fg, selectforeground=bg, justify='center')
-firstname_txt.place(x = 150, y = 202)
+firstname_txt.place(x = 165, y = 202)
 
 lastname_lbl = Label(window, text = "Last Name")
-lastname_lbl.place(x=50 , y=250 )
+lastname_lbl.place(x=65 , y=250 )
 lastname_txt = Entry(window, selectbackground=fg, selectforeground=bg, justify='center')
-lastname_txt.place(x = 150, y = 252 )
+lastname_txt.place(x = 165, y = 252 )
 
 adm_lbl = Label(window, text = "Admission No.")
-adm_lbl.place(x = 50, y = 300)
+adm_lbl.place(x = 65, y = 300)
 adm_txt = Entry(window, selectbackground=fg, selectforeground=bg, justify='center')
-adm_txt.place(x = 150, y = 302)
+adm_txt.place(x = 165, y = 302)
 
 # Gender-selection
 gendervar = StringVar()
 gendervar.set(' ')
 
 gender_lbl = Label(window, text = "Gender")
-gender_lbl.place(x = 50, y = 350)
+gender_lbl.place(x = 65, y = 350)
 male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg)
-male.place(x = 130, y = 349)
+male.place(x = 145, y = 349)
 
 female = Radiobutton(window, text = "Female",variable = gendervar, value = "Female", selectcolor = bg)
-female.place(x = 210, y = 349)
+female.place(x = 225, y = 349)
 
 # Submit button
 student_btn = Button(window, text = "Add Student", command = studentsubmit)
-student_btn.place(x=125,y = 400)
+student_btn.place(x=140,y = 400)
 
 ## ADDING/EDITING EXAM RESULTS ##
 
 class_lbl = Label(window, text = "Class")
-class_lbl.place(x = 400, y = 203)
+class_lbl.place(x = 415, y = 203)
 
 classvar= StringVar()
 classvar.set("None")
 classdrop = OptionMenu(window, classvar, *packages.functions.classlist)
-classdrop.place(x = 460, y = 200)
+classdrop.place(x = 475, y = 200)
 
 roll_lbl = Label(window, text = "Roll No.")
-roll_lbl.place(x = 645, y = 200)
+roll_lbl.place(x = 660, y = 200)
 roll_txt = Entry(window, selectbackground=fg, selectforeground=bg, justify='center')
-roll_txt.place(x = 745, y = 203)
+roll_txt.place(x = 760, y = 203)
 
 section = Label(window, text = "Section")
-section.place(x = 400, y = 253)
+section.place(x = 415, y = 253)
 
 sectionvar = StringVar()
 sectionvar.set("None")
 sectiondrop = OptionMenu(window, sectionvar, *packages.functions.sectionlist)
-sectiondrop.place(x = 460, y= 250)
+sectiondrop.place(x = 475, y= 250)
 
 year_lbl = Label(window, text="Year of Session", font=('Tw Cen MT', 12))
-year_lbl.place(x=645, y=250)
+year_lbl.place(x=660, y=250)
 
 yearvar = StringVar()
 year_txt = Entry(window, textvariable=yearvar, selectbackground=fg, selectforeground=bg, justify='center')
-year_txt.place(x=745,y=253)
+year_txt.place(x=760,y=253)
 
 sub_lbl = Label(window, text="Subject")
-sub_lbl.place(x=400,y=303)
+sub_lbl.place(x=415,y=303)
 
 subvar = StringVar()
 subvar.set("None")
 subject_drop = OptionMenu(window, subvar, *packages.functions.sublist)
-subject_drop.place(x=460,y=300)
+subject_drop.place(x=475,y=300)
 
 exam_lbl = Label(window, text="Exam Name")
-exam_lbl.place(x=645,y=300)
+exam_lbl.place(x=660,y=300)
 
 exam_text = Entry(window, selectbackground=fg, selectforeground=bg, justify='center')
-exam_text.place(x=745,y=303)
+exam_text.place(x=760,y=303)
 
 marks_lbl = Label(window, text="Marks")
-marks_lbl.place(x=400,y=350)
+marks_lbl.place(x=415,y=350)
 
 marksvar = StringVar()
 marks_obt = Entry(window, textvariable=marksvar, width=3, selectbackground=fg, selectforeground=bg, justify='center')
-marks_obt.place(x=460,y=354)
+marks_obt.place(x=475,y=354)
 
 slash_lbl = Label(window, text='/', font=('Bahnschrift', 23))
-slash_lbl.place(x=490,y=340)
+slash_lbl.place(x=505,y=340)
 
 totalvar = StringVar()
 total_mks = Entry(window, textvariable=totalvar, width=3, selectbackground=fg, selectforeground=bg, justify='center')
-total_mks.place(x=515,y=354)
+total_mks.place(x=530,y=354)
 
 #reset_btn = Button(window, text = "Reset", command = reset)
 #reset_btn.place(x=450,y = 440)
@@ -348,6 +348,11 @@ cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
 row = cur.fetchall()
 for rw in row:
     tree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2]))
+
+vsb = ttk.Scrollbar(window, orient="vertical", command=tree.yview)
+vsb.place(x=10+321, y=465, height=200+27)
+
+tree.configure(yscrollcommand=vsb.set)
 
 submit_btn = Button(window, text="Submit", command=acasubmit)
 submit_btn.place(x=647, y=345)
