@@ -112,6 +112,7 @@ while y <= 5:
         
         print("Sections table created.")
         section_exist = True
+        y = y + 1
 
         cur2.execute("INSERT INTO sections (Name)\
             VALUES \

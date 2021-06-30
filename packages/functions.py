@@ -1,5 +1,7 @@
+from tkinter.ttk import Progressbar
 import mysql.connector
 from tkinter import *
+from tkinter import font
 import getpass
 
 bg = "#282828"
@@ -10,7 +12,6 @@ fg = "#ebdbb2"
 # Login function used to log in to the MySQL database before the application starts #
 
 def login():
-    from tkinter import font
 
     def check():
         global username
@@ -142,4 +143,3 @@ def master_lists():
 
     for i in cur:
         sectionlist.append(i)
-
