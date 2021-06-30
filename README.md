@@ -1,37 +1,28 @@
 ## Report Card Editor
 
-An application to edit and view all the student report cards you desire. This project is created as a school activity for session 2021-22
+An application to edit and view all the student report cards you desire. This is DPSI Group 1's CS Project for the session 2021-22.
 
 ## Created By 
- - Nirvan Sharma  XII-A 
- - Ojus Agarwal  XII-A
- - Shikhar Tyagi  XII-C
 
-## Salient Features
+- Nirvan Sharma  XII-A 
+- Ojus Agarwal  XII-A
+- Shikhar Tyagi  XII-C
 
-- Add student data from GUI
-- Add Academic data from GUI
-- Display Marksheet in GUI 
-- Export marksheet in PDF format
+## Features
 
-## Technology Stack
- 
-    - tkinter
-    - MySQL
-    - Python
+- Add, view, and delete Student and Academic data from the GUI.
 
-## Pre-requisite -
+## Dependencies
 
-- Setup up MySQL
+- Python3
+- Tkinter
+- MySQL
 
 ## To run the ``Report Card Editor``, please follow below steps -
 
-- Take clone of repository 
+- Clone the repository and run `editor_gui.py`
 
-- To run project on local machine, navigate to the project folder - `REPORT-CARD-EDITOR`
-- select the python file `editor_gui.py` to run 
-- If using VSC, right click and select `Run Python File in terminal`
+## To-do
 
-
-
-
+- Create report card creation process.
+- Create update function for student data and academic data.

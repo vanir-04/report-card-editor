@@ -1,4 +1,3 @@
-from tkinter.ttk import Progressbar
 import mysql.connector
 from tkinter import *
 from tkinter import font
@@ -52,7 +51,6 @@ def login():
                     roottry_lbl.place(x=0, y=125)
                     break
 
-
         rootpass = Tk()
         rootpass.iconbitmap("assets/key.ico")
         rootpass.geometry("255x200+572+340")
@@ -69,11 +67,9 @@ def login():
 
         rootpass.mainloop()
 
-
-
     pwd_prompt = Tk()
     pwd_prompt.iconbitmap("assets/loginicon.ico")
-    pwd_prompt.geometry("300x250+550+300")
+    pwd_prompt.geometry("300x250+530+250")
     pwd_prompt.title("Account Login")
     pwd_prompt.tk_setPalette(background="#282828", foreground="#ebdbb2")
     defaultFont = font.nametofont("TkDefaultFont")
@@ -102,6 +98,26 @@ def login():
     create_btn.place(x=160,y=167)
 
     pwd_prompt.mainloop()
+
+# If user does not login
+
+def loginfail():
+    def ok():
+        fail.destroy()
+
+    fail = Tk()
+    fail.iconbitmap("assets/error.ico")
+    fail.geometry("300x180+530+250")
+    fail.title("Login Failed")
+    fail.tk_setPalette(background="#282828", foreground="#ebdbb2")
+    
+    nologin = Label(fail, text="Login is required to\nuse the program.", font=("Bahnschrift", 25), fg="#fb3934")
+    nologin.place(x=3, y=25)
+
+    okbutton = Button(fail, text="Ok", command=ok, width=20)
+    okbutton.place(x=80, y=125)
+
+    fail.mainloop()
 
 # Same as login, but in a command line
 

@@ -4,9 +4,12 @@ import packages.functions
 packages.functions.login()
 
 # Create cursors
-
-cur = packages.functions.db.cursor(buffered=True)
-cur2 = packages.functions.db.cursor()
+try:
+    cur = packages.functions.db.cursor(buffered=True)
+    cur2 = packages.functions.db.cursor()
+except:
+    packages.functions.loginfail()
+    quit()
 
 # Check for existence of database and create it if not found
 
@@ -149,10 +152,6 @@ while y <= 5:
         RollNo int,\
         SubjectID int,\
         PRIMARY KEY (AcademicID),\
-        FOREIGN KEY (StudentID) REFERENCES student(StudentID),\
-        FOREIGN KEY (SubjectID) REFERENCES subjects(SubjectID),\
-        FOREIGN KEY (SectionID) REFERENCES sections(SectionID),\
-        FOREIGN KEY (ClassID) REFERENCES class(ClassID),\
         CONSTRAINT UC_StudentClassYearSubject UNIQUE (StudentID, ClassID, Year, SubjectID)\
         );")
         
@@ -170,7 +169,6 @@ while y <= 5:
         MarksObtained int,\
         Year int(4),\
         PRIMARY KEY (ExamID),\
-        FOREIGN KEY (AcademicID) REFERENCES academics(AcademicID),\
         CONSTRAINT UC_AcademicIDNameYear UNIQUE (AcademicID, Name, Year)\
         );")
         
