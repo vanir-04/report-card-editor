@@ -450,4 +450,42 @@ markstree.bind("<ButtonRelease-1>", a_fetch)
 submit_btn = Button(window, text="Submit", command=acasubmit)
 submit_btn.place(x=617, y=345)
 
+## Update Information Button ##
+
+def updation():
+    sItem = stutree.focus()
+    svalues = stutree.item(sItem)
+    name = (firstnamevar.get() + ' ' + lastnamevar.get())
+    gender = gendervar.get()
+    admno = svalues['values'][0]
+    
+    cur = packages.functions.db.cursor(buffered=True)
+    cur.execute("USE report_card_db;")
+
+    cur.execute("SELECT StudentID FROM student WHERE AdmissionNo = '"+admno+"' ;")
+    StudID = str(cur.fetchone()).strip("(),")
+        
+    cur.execute("UPDATE student SET Name = '"+name+"', Gender = '"+gender+"', AdmissionNo = '"+admno+"' \
+        WHERE StudentID = '"+StudID+"';")
+    packages.functions.db.commit()
+
+    stutree.delete(*stutree.get_children())
+    cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
+    row = cur.fetchall()
+    for rw in row:
+        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2]))
+
+    sItem = stutree.focus()
+    svalues = stutree.item(sItem)
+    stuname = (svalues['values'][1]).split()
+    firstnamevar.set(stuname[0])
+    lastnamevar.set(stuname[1])
+    admvar.set(svalues['values'][0])
+    gendervar.set(svalues['values'][2])
+    
+    
+update_btn = Button(window, text = "Update", command = updation)
+update_btn.place(x = 40, y = 400)
+
+
 window.mainloop()
