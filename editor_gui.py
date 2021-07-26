@@ -5,12 +5,11 @@ import packages.functions
 import main_backend
 from tkinter import ttk
 import os
+from datetime import date
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Table
 from reportlab.pdfgen import canvas
-from reportlab.platypus.doctemplate import SimpleDocTemplate
-from reportlab.platypus.tables import TableStyle
 
 ### FUNCTIONS ###
 
@@ -21,13 +20,13 @@ def studentsubmit():
     name = (firstnamevar.get() + ' ' + lastnamevar.get())
     admno = str(admvar.get())
     gender = gendervar.get()
-    
+    school = schoolname.get()
     try:
         cur = packages.functions.db.cursor(buffered=True)
         cur.execute("USE report_card_db;")
     
-        cur.execute('INSERT INTO student (AdmissionNo, Name, Gender) \
-            VALUES ("'+admno+'", "'+name+'", "'+gender+'");')
+        cur.execute('INSERT INTO student (AdmissionNo, Name, Gender, SchoolName) \
+            VALUES ("'+admno+'", "'+name+'", "'+gender+'", "'+school+'");')
         packages.functions.db.commit()
     except:
         popup = Tk()
@@ -45,10 +44,10 @@ def studentsubmit():
         cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
     
     stutree.delete(*stutree.get_children())
-    cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
+    cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
     row = cur.fetchall()
     for rw in row:
-        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2])) 
+        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2],rw[3])) 
 
 def acasubmit():
     def close():
@@ -209,6 +208,7 @@ def s_fetch(event):
     lastnamevar.set(stuname[1])
     admvar.set(svalues['values'][0])
     gendervar.set(svalues['values'][2])
+    schoolname.set(svalues['values'][3])
 
 def a_fetch(event):
     aItem = markstree.focus()
@@ -228,10 +228,10 @@ def s_delete():
     packages.functions.db.commit()
     
     stutree.delete(*stutree.get_children())
-    cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
+    cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
     row = cur.fetchall()
     for rw in row:
-        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2])) 
+        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2],rw[3])) 
 
 packages.functions.master_lists()
 
@@ -259,6 +259,8 @@ fg = "#ebdbb2"
 graybox = "#a89984"
 
 ### WIDGETS ###
+# Assigning Date Variable
+current_date = date.today()
 # Folder Creation
 if not os.path.exists('Report Cards'):
     os.makedirs('Report Cards')
@@ -281,10 +283,11 @@ data_lbl.place(x = 103, y = 100)
 ## STUDENT INFO ##
 # School Name
 School_lbl = Label(window, text = "School Name")
-School_lbl.place(x = 65, y = 150)
-School_Name_Var = StringVar()
-School_txt = Entry(window, textvariable=School_Name_Var,selectbackground=fg, selectforeground=bg, justify='center' )
-School_txt.place(x = 165, y = 152)
+School_lbl.place(x = 45, y = 150)
+schoolname = StringVar()
+School_txt = Entry(window, textvariable=schoolname,selectbackground=fg, selectforeground=bg, justify='center', width=30 )
+School_txt.place(x = 145, y = 152)
+
 # Student Details
 firstname_lbl = Label(window, text = "First Name")
 firstname_lbl.place(x = 65, y = 200)
@@ -343,8 +346,8 @@ section = Label(window, text = "Section")
 section.place(x = 415, y = 253)
 
 sectionvar = StringVar()
-sectionvar.set("None")
-sectiondrop = OptionMenu(window, sectionvar,*packages.functions.sectionlist)
+sectionvar.set("None")    
+sectiondrop = OptionMenu(window,sectionvar,*packages.functions.sectionlist)
 sectiondrop.place(x = 475, y= 250)
 
 year_lbl = Label(window, text="Year of Session", font=('Tw Cen MT', 12))
@@ -386,29 +389,26 @@ total_mks.place(x=530,y=354)
 #reset_btn = Button(window, text = "Reset", command = reset)
 #reset_btn.place(x=450,y = 440)
 
-stutree = ttk.Treeview(window, columns=('0', '1', '2'), show='headings')
+stutree = ttk.Treeview(window, columns=('0', '1', '2', '3'), show='headings')
 stutree.place(x=10, y=465)
 
 stutree.column('0', width=100, anchor=CENTER)
-stutree.column('1', width=140, anchor=CENTER)
+stutree.column('1', width=100, anchor=CENTER)
 stutree.column('2', width=80, anchor=CENTER)
+stutree.column('3', width=80, anchor=CENTER)
 
 stutree.heading('0', text="Admission No.")
 stutree.heading('1', text="Name")
 stutree.heading('2', text="Gender")
+stutree.heading('3', text="School Name")
 
 stutree.bind("<ButtonRelease-1>", s_fetch)
 
 cur = packages.functions.db.cursor()
-cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
+cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
 srow = cur.fetchall()
 for rw in srow:
-    stutree.insert('','end',values=(rw[0],rw[1],rw[2]))
-
-stuscrollbar = ttk.Scrollbar(window, orient="vertical", command=stutree.yview)
-stuscrollbar.place(x=10+321, y=466, height=200+25)
-
-stutree.configure(yscrollcommand=stuscrollbar.set)
+    stutree.insert('','end',values=(rw[0],rw[1],rw[2],rw[3]))
 
 markstree = ttk.Treeview(window, columns=('1', '2', '3', '4', '5', '6', '7', '8', '9'), show='headings', height=13)
 markstree.place(x=373, y=405)
@@ -653,6 +653,8 @@ def PDF_Generation():
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
     pdf.drawImage('LightBlue_Background.png', 0, 0, 1000, 1000)
     pdf.setTitle(title = 'PDF_Generation' )
+    pdf.setFont('Helvetica', 17)
+    pdf.drawString(x = 26, y = 800, text = str(current_date))
     pdf.setFont('Helvetica-Bold', 20)
     pdf.drawString(x = 160, y = 800, text = School_txt.get())
     pdf.setLineWidth(4)
@@ -679,6 +681,7 @@ def PDF_Generation():
         pdf.line(300, 650, 300, 720)
         pdf.line(0,650,800,650)
         pdf.line(0,720,800,720)
+        pdf.line(130, 1000, 130, 780)
     dotted_lines(pdf)
         
     pdf.setDash(10000000,1)
