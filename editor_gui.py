@@ -1,9 +1,16 @@
-from tkinter import *
+from tkinter import*
 from tkinter import font
 from mysql.connector.errors import IntegrityError, ProgrammingError
 import packages.functions
 import main_backend
 from tkinter import ttk
+import os
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import Table
+from reportlab.pdfgen import canvas
+from reportlab.platypus.doctemplate import SimpleDocTemplate
+from reportlab.platypus.tables import TableStyle
 
 ### FUNCTIONS ###
 
@@ -231,7 +238,7 @@ packages.functions.master_lists()
 ### WINDOW ###
 
 window=Tk()
-window.iconbitmap("assets/edit.ico")
+
 
 # Canvas
 canvas1 = Canvas()
@@ -252,6 +259,13 @@ fg = "#ebdbb2"
 graybox = "#a89984"
 
 ### WIDGETS ###
+# Folder Creation
+if not os.path.exists('Report Cards'):
+    os.makedirs('Report Cards')
+    print("Report Cards Folder created")
+else:
+    print("Folder already exists")
+pdf_path = os.getcwd() + '\Report Cards'
 
 # Title
 title = Label(window, text="Student Marksheet", fg = "#b8bb26", font = ("Bahnschrift",30))
@@ -259,13 +273,18 @@ title.place(x=470,y=29)
 
 # Headers
 acad_lbl = Label(window, text="Academic Data", font=("Bahnschrift",20))
-acad_lbl.place(x=545, y=125)
+acad_lbl.place(x=545, y=100)
 
 data_lbl = Label(window, text="Student Data", font = ("Bahnschrift",20))
-data_lbl.place(x = 103, y = 125) 
+data_lbl.place(x = 103, y = 100) 
 
 ## STUDENT INFO ##
-
+# School Name
+School_lbl = Label(window, text = "School Name")
+School_lbl.place(x = 65, y = 150)
+School_Name_Var = StringVar()
+School_txt = Entry(window, textvariable=School_Name_Var,selectbackground=fg, selectforeground=bg, justify='center' )
+School_txt.place(x = 165, y = 152)
 # Student Details
 firstname_lbl = Label(window, text = "First Name")
 firstname_lbl.place(x = 65, y = 200)
@@ -284,7 +303,7 @@ adm_lbl.place(x = 65, y = 300)
 admvar = StringVar()
 adm_txt = Entry(window, textvariable=admvar, selectbackground=fg, selectforeground=bg, justify='center')
 adm_txt.place(x = 165, y = 302)
-
+ 
 # Gender-selection
 gendervar = StringVar()
 gendervar.set(' ')
@@ -311,7 +330,7 @@ class_lbl.place(x = 415, y = 203)
 
 classvar= StringVar()
 classvar.set("None")
-classdrop = OptionMenu(window, classvar, *packages.functions.classlist)
+classdrop = OptionMenu(window, classvar,  *packages.functions.classlist)
 classdrop.place(x = 475, y = 200)
 
 roll_lbl = Label(window, text = "Roll No.")
@@ -325,7 +344,7 @@ section.place(x = 415, y = 253)
 
 sectionvar = StringVar()
 sectionvar.set("None")
-sectiondrop = OptionMenu(window, sectionvar, *packages.functions.sectionlist)
+sectiondrop = OptionMenu(window, sectionvar,*packages.functions.sectionlist)
 sectiondrop.place(x = 475, y= 250)
 
 year_lbl = Label(window, text="Year of Session", font=('Tw Cen MT', 12))
@@ -477,15 +496,215 @@ def updation():
 
     sItem = stutree.focus()
     svalues = stutree.item(sItem)
-    stuname = (svalues['values'][1]).split()
+    stuname = (svalues['values'][0]).split()
     firstnamevar.set(stuname[0])
     lastnamevar.set(stuname[1])
     admvar.set(svalues['values'][0])
     gendervar.set(svalues['values'][2])
+
+    PDF_Update_Button = Button(window, text = 'Update PDF Details', command = PDF_Generation)
+    PDF_Update_Button.place(x = 1075, y = 200)
     
     
 update_btn = Button(window, text = "Update", command = updation)
 update_btn.place(x = 40, y = 400)
 
+
+############################################################################PDF FILE MAKING###################################################################
+def PDF_Generation():
+    ########################Fetching Table Data########################
+    sItem = stutree.focus()
+    svalues = stutree.item(sItem)
+    admno = svalues['values'][0]
+    Student_ID = []
+    cur.execute("select studentID from student where AdmissionNo = '" +str(admno)+ "'; ")
+    Student_ = cur.fetchall()
+    for [i] in Student_:
+        Student_ID.append(i)
+    print(Student_ID[0])
+            
+    
+    
+    #####SUBJECTS#####
+    Subject_ID_Statement = ('SELECT SubjectID FROM Academics WHERE StudentID = ')
+    Subject_ID_Query = Subject_ID_Statement + str(Student_ID[0])
+    cur.execute(Subject_ID_Query)
+    Subject_Data = cur.fetchall()
+    SubjectID = []
+    Subs = []
+    Subs1 = []
+    Subjects = []
+    Select_Statement = "SELECT Name FROM Subjects WHERE SubjectID = "
+    
+    #Getting Subject ID
+    for [x] in Subject_Data:
+        SubjectID.append(x)
+    print(SubjectID)
+    
+    #Getting Subjects
+    for i in SubjectID:
+        Select_Statement_Query = Select_Statement + str(i)
+        cur.execute(Select_Statement_Query)
+        Data = cur.fetchall()
+        Subs.append(Data)
+    for [i] in Subs:
+        Subs1.append(i)
+    for [i] in Subs1:
+        Subjects.append(i)
+    Subjects.insert(0, 'Subject')
+    print(Subjects)
+    
+    #####NAME, ADMISSION NUMBER, GENDER#####
+    General_Details_Statement = ('SELECT AdmissionNo, Name, Gender FROM student WHERE studentID  = ')
+    General_Details_Query = General_Details_Statement + str(Student_ID[0])
+    cur.execute(General_Details_Query)
+    List = cur.fetchall()
+    Student_Data = []
+    for i in List[0]:
+        Student_Data.append(i)
+    print(Student_Data)
+    
+    
+    
+    #####Class, Section, Roll No.#####
+    Class_Statement = ('SELECT DISTINCT ClassID, SectionID, RollNo FROM Academics WHERE StudentID = ')
+    Class_Query = Class_Statement + str(Student_ID[0])
+    cur.execute(Class_Query)
+    List1 = cur.fetchall()
+    Classroom_Data = []
+    print(List1)
+    for i in List1[0]:  
+        Classroom_Data.append(i)
+    print(Classroom_Data)
+    
+    
+    ###CLASS###
+    
+    Statement_Class = ('SELECT Name FROM Class WHERE CLassID = ')
+    Class_Query = Statement_Class + str(Classroom_Data[0])
+    cur.execute(Class_Query)
+    Class = cur.fetchall()
+    Class_List = []
+    for [i] in Class:
+        Class_List.append(i)
+    print(Class_List)
+    
+    
+    ###SECTION###
+    Statement_Section = ('SELECT Name FROM Sections WHERE SectionID = ')
+    Section_Query = Statement_Section + str(Classroom_Data[1])
+    cur.execute(Section_Query)
+    Section = cur.fetchall()
+    Section_List = []
+    for [i] in Section:
+        Section_List.append(i)
+    print(Section_List)
+    
+    
+    ###ROLL NO###
+    #Classroom_Data[2] is the Roll Number
+    
+    
+    
+    #####MARKS AND EXAM#####
+    AcademicID = []
+    Academic_ID_Collection = ('SELECT AcademicID FROM Academics WHERE StudentID = ')
+    Academic_ID_Query = Academic_ID_Collection + str(Student_ID[0])
+    cur.execute(Academic_ID_Query)
+    Academic = cur.fetchall()
+    for [i] in Academic:
+        AcademicID.append(i)
+    print(AcademicID)
+    
+    Marks_Obtained = []
+    Total_Marks = []
+    
+    for x in AcademicID:
+        Statement_12 = ('SELECT MarksObtained FROM exam WHERE AcademicID = ')
+        Statement_12_Query = Statement_12 + str(x)
+        cur.execute(Statement_12_Query)
+        Marks = cur.fetchall()
+        for [i] in Marks:
+            Marks_Obtained.append(i)
+    Marks_Obtained.insert(0, 'Marks Scored')
+    print(Marks_Obtained)
+    for y in AcademicID:
+        Statement_101 = ('SELECT TotalMarks FROM exam WHERE AcademicID = ')    
+        Statement_101_Query = Statement_101  + str(y)
+        cur.execute(Statement_101_Query)
+        Total = cur.fetchall()
+        for [i] in Total:
+            Total_Marks.append(i)
+    Total_Marks.insert(0,'Max. Marks')
+    print(Total_Marks)  
+    
+    table_data = []
+    for a in (Subjects, Marks_Obtained, Total_Marks):
+        table_data.append(a)
+    
+    print(table_data)
+#################################################################################################################################################
+
+#Creating PDF Page
+    
+        
+    pdf_name = PDF_Name_Text.get() + '.pdf'
+    updated_pdf_path = os.path.join(pdf_path, pdf_name)
+    pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
+    pdf.drawImage('LightBlue_Background.png', 0, 0, 1000, 1000)
+    pdf.setTitle(title = 'PDF_Generation' )
+    pdf.setFont('Helvetica-Bold', 20)
+    pdf.drawString(x = 160, y = 800, text = School_txt.get())
+    pdf.setLineWidth(4)
+    pdf.line(0, 780, 700, 780)
+    pdf.setFont('Helvetica', 16)
+    pdf.drawString(x = 230, y = 750, text = 'Student Report Card')
+    pdf.setLineWidth(2)
+    pdf.line(230, 749, 376, 749)
+    pdf.setLineWidth(4)
+    pdf.rect(1, 1, 593, 840, fill = 0)
+    pdf.setLineWidth(1)
+    pdf.setFont('Helvetica', 14)
+    pdf.drawString(60, 700, text = 'Name :')
+    pdf.drawString(108, 700, text = Student_Data[1])
+    pdf.drawString(60, 660, text = 'Adm No. :')
+    pdf.drawString(128, 660, text = Student_Data[0])
+    pdf.drawString(400, 700, text = 'Gender :')
+    pdf.drawString(460, 700, text = Student_Data[2])
+    pdf.drawString(400, 660, text = 'Roll No. :')
+    pdf.drawString(462, 660, text = str(Classroom_Data[2]))
+    def dotted_lines(pdf):
+        pdf.setDash(1, 1) 
+        pdf.line(0, 684, 800, 684)
+        pdf.line(300, 650, 300, 720)
+        pdf.line(0,650,800,650)
+        pdf.line(0,720,800,720)
+    dotted_lines(pdf)
+        
+    pdf.setDash(10000000,1)
+    table = Table(table_data)
+    table.setStyle([ \
+      ('GRID', (0,0), (0, -1), 2, colors.black),
+      ('GRID', (0, 0), (-1, -1), 0.5 ,colors.black), \
+      ('TEXTCOLOR', (0,0), (-1, -1), colors.black), \
+      ('ALIGN', (0,0,), (-1, -1), 'LEFT'), \
+      ('FONTNAME', (0,0), (-1,-1), 'Helvetica-Bold'), \
+      ('FONTSIZE', (0,0), (-1,-1), 12)])
+    
+        
+    table.wrapOn(pdf, 100, 400)
+    table.drawOn(pdf, 20, 470)
+    pdf.save()
+    print("PDF Report File has been created")
+    print(updated_pdf_path)
+
+PDF_Generator_Button = Button(window, text = "Create PDF", command = PDF_Generation)
+PDF_Generator_Button.place(x=955, y=200)
+
+PDF_Name = Label(window, text = 'Name of PDF :')
+PDF_Name.place(x = 950, y  = 150)
+PDF_Variable = StringVar()
+PDF_Name_Text = Entry(window, textvariable=PDF_Variable, selectbackground=fg, selectforeground=bg, justify='center')
+PDF_Name_Text.place(x = 1050, y = 150)
 
 window.mainloop()
