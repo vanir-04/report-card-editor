@@ -1,5 +1,6 @@
 from tkinter import*
 from tkinter import font
+from tkinter.filedialog import asksaveasfile
 from mysql.connector.errors import IntegrityError, ProgrammingError
 import packages.functions
 import main_backend
@@ -648,10 +649,12 @@ def PDF_Generation():
 #Creating PDF Page
     
         
-    pdf_name = PDF_Name_Text.get() + '.pdf'
-    updated_pdf_path = os.path.join(pdf_path, pdf_name)
+    #pdf_name = PDF_Name_Text.get() + '.pdf'
+    filetype = [('PDF File', '*.pdf')]
+    filename = asksaveasfile(filetypes=filetype, defaultextension=filetype)
+    updated_pdf_path = filename.name
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
-    pdf.drawImage('LightBlue_Background.png', 0, 0, 1000, 1000)
+    pdf.drawImage('assets/LightBlue_Background.png', 0, 0, 1000, 1000)
     pdf.setTitle(title = 'PDF_Generation' )
     pdf.setFont('Helvetica', 17)
     pdf.drawString(x = 26, y = 800, text = str(current_date))
@@ -704,10 +707,10 @@ def PDF_Generation():
 PDF_Generator_Button = Button(window, text = "Create PDF", command = PDF_Generation)
 PDF_Generator_Button.place(x=955, y=200)
 
-PDF_Name = Label(window, text = 'Name of PDF :')
-PDF_Name.place(x = 950, y  = 150)
-PDF_Variable = StringVar()
-PDF_Name_Text = Entry(window, textvariable=PDF_Variable, selectbackground=fg, selectforeground=bg, justify='center')
-PDF_Name_Text.place(x = 1050, y = 150)
+#PDF_Name = Label(window, text = 'Name of PDF :')
+#PDF_Name.place(x = 950, y  = 150)
+#PDF_Variable = StringVar()
+#PDF_Name_Text = Entry(window, textvariable=PDF_Variable, selectbackground=fg, selectforeground=bg, justify='center')
+#PDF_Name_Text.place(x = 1050, y = 150)
 
 window.mainloop()
