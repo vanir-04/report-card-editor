@@ -134,6 +134,7 @@ while y <= 5:
             AdmissionNo varchar(255) UNIQUE,\
             Name varchar(255),\
             Gender varchar(255),\
+            SchoolName varchar(255),\
             PRIMARY KEY (StudentID)\
             );")
         
