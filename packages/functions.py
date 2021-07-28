@@ -2,9 +2,11 @@ import mysql.connector
 from tkinter import *
 from tkinter import font
 import getpass
+import os
 
 bg = "#282828"
 fg = "#ebdbb2"
+cwd = os.path.dirname(os.path.dirname(__file__))
 
 ## Functions used in the program ##
 
@@ -52,7 +54,7 @@ def login():
                     break
 
         rootpass = Tk()
-        rootpass.iconbitmap("assets/key.ico")
+        rootpass.iconbitmap(os.path.join(cwd,"assets/key.ico"))
         rootpass.geometry("255x200+572+340")
         rootpass.title("Root Pass")
         rootpass.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -68,7 +70,7 @@ def login():
         rootpass.mainloop()
 
     pwd_prompt = Tk()
-    pwd_prompt.iconbitmap("assets/loginicon.ico")
+    pwd_prompt.iconbitmap(os.path.join(cwd,"assets/loginicon.ico"))
     pwd_prompt.geometry("300x250+530+250")
     pwd_prompt.title("Account Login")
     pwd_prompt.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -106,7 +108,7 @@ def loginfail():
         fail.destroy()
 
     fail = Tk()
-    fail.iconbitmap("assets/error.ico")
+    fail.iconbitmap(os.path.join(cwd,"assets/error.ico"))
     fail.geometry("300x180+530+250")
     fail.title("Login Failed")
     fail.tk_setPalette(background="#282828", foreground="#ebdbb2")

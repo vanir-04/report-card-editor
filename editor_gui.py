@@ -1,16 +1,18 @@
-from tkinter import*
+from tkinter import *
 from tkinter import font
 from tkinter.filedialog import asksaveasfile
 from mysql.connector.errors import IntegrityError, ProgrammingError
 import packages.functions
+import os
 import main_backend
 from tkinter import ttk
-import os
 from datetime import date
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Table
 from reportlab.pdfgen import canvas
+
+cwd = os.path.dirname(os.path.abspath(__file__))
 
 ### FUNCTIONS ###
 
@@ -31,7 +33,7 @@ def studentsubmit():
         packages.functions.db.commit()
     except:
         popup = Tk()
-        popup.iconbitmap("assets/error.ico")
+        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -145,7 +147,7 @@ def acasubmit():
 
     elif sem_fail_integ == True and mark_fail_integ == True:
         popup = Tk()
-        popup.iconbitmap("assets/error.ico")
+        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -159,7 +161,7 @@ def acasubmit():
         pass
     elif sem_fail_prog == True and mark_fail_prog == True:
         popup = Tk()
-        popup.iconbitmap("assets/error.ico")
+        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
@@ -245,7 +247,7 @@ def s_update():
         def ok():
             popup.destroy()
         popup = Tk()
-        popup.iconbitmap("assets/error.ico")
+        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
         popup.title("Error")
         popup.geometry('300x150+550+250')
@@ -271,7 +273,7 @@ def s_update():
         def ok():
             popup.destroy()
         popup = Tk()
-        popup.iconbitmap("assets/error.ico")
+        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
         popup.title("Error")
         popup.geometry('300x150+550+250')
@@ -420,7 +422,7 @@ def pdf_gen():
     filename = asksaveasfile(filetypes=filetype, defaultextension=filetype)
     updated_pdf_path = filename.name
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
-    pdf.drawImage('assets/LightBlue_Background.png', 0, 0, 1000, 1000)
+    pdf.drawImage((os.path.join(cwd,'assets/LightBlue_Background.png')), 0, 0, 1000, 1000)
     pdf.setTitle(title = 'pdf_gen' )
     pdf.setFont('Helvetica', 17)
     pdf.drawString(x = 26, y = 800, text = str(current_date))
@@ -479,14 +481,15 @@ window=Tk()
 # Canvas
 canvas1 = Canvas()
 canvas1.config(width='1280', height='720')
-line1 = canvas1.create_line(360,60,360,768,fill='#458588',width=2)
-line2 = canvas1.create_line(0,60,1366,60, fill = '#fb4934', width = 3)
+line1 = canvas1.create_line(360,60,360,768, fill='#458588', width=2)
+line2 = canvas1.create_line(0,60,1366,60, fill='#fb4934', width=3)
 canvas1.pack()
 
 # Set Window Configurations
 defaultFont = font.nametofont("TkDefaultFont")
 defaultFont.configure(family="Tw Cen MT", size=13)
 window.title('Editor')
+window.iconbitmap(os.path.join(cwd,'assets/edit.ico'))
 window.geometry("1280x720+30+0")
 window.tk_setPalette(background="#282828", foreground="#ebdbb2")
 window.resizable(0, 0)
