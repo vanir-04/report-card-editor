@@ -175,7 +175,10 @@ def acasubmit():
         pass
     
     markstree.delete(*markstree.get_children())
-        
+    
+    sItem = stutree.focus()
+    svalues = stutree.item(sItem)
+    
     cur.execute('SELECT a.Year, \
         c.Name, \
         se.Name, \
@@ -185,18 +188,19 @@ def acasubmit():
         su.Name, \
         e.MarksObtained, \
         e.TotalMarks \
-            FROM academics a \
-                INNER JOIN class c \
-                    ON c.ClassID = a.ClassID \
-                INNER JOIN sections se \
-                    ON se.SectionID = a.SectionID \
-                INNER JOIN student st \
-                    ON st.StudentID = a.StudentID \
-                INNER JOIN subjects su \
-                    ON su.SubjectID = a.SubjectID \
-                INNER JOIN exam e \
-                    ON e.AcademicID = a.AcademicID \
-            ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+        FROM academics a \
+            INNER JOIN class c \
+                ON c.ClassID = a.ClassID \
+            INNER JOIN sections se \
+                ON se.SectionID = a.SectionID \
+            INNER JOIN student st \
+                ON st.StudentID = a.StudentID \
+            INNER JOIN subjects su \
+                ON su.SubjectID = a.SubjectID \
+            INNER JOIN exam e \
+                ON e.AcademicID = a.AcademicID \
+        WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
     
     arow = cur.fetchall()
 
@@ -213,6 +217,35 @@ def s_fetch(event):
     gendervar.set(svalues['values'][2])
     schoolname.set(svalues['values'][3])
 
+    cur.execute('SELECT a.Year, \
+    c.Name, \
+    se.Name, \
+    a.RollNo, \
+    st.Name, \
+    e.Name, \
+    su.Name, \
+    e.MarksObtained, \
+    e.TotalMarks \
+        FROM academics a \
+            INNER JOIN class c \
+                ON c.ClassID = a.ClassID \
+            INNER JOIN sections se \
+                ON se.SectionID = a.SectionID \
+            INNER JOIN student st \
+                ON st.StudentID = a.StudentID \
+            INNER JOIN subjects su \
+                ON su.SubjectID = a.SubjectID \
+            INNER JOIN exam e \
+                ON e.AcademicID = a.AcademicID \
+        WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+    arow = cur.fetchall()
+
+    markstree.delete(*markstree.get_children())
+
+    for arw in arow:
+        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
+
 def a_fetch(event):
     aItem = markstree.focus()
     avalues = markstree.item(aItem)
@@ -228,6 +261,7 @@ def a_fetch(event):
 def s_delete():
     admno = admvar.get()
     cur.execute('DELETE FROM student WHERE AdmissionNo = "'+admno+'";')
+    cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
     packages.functions.db.commit()
     
     stutree.delete(*stutree.get_children())
@@ -269,6 +303,7 @@ def s_update():
     try:    
         cur.execute("UPDATE student SET Name = '"+name+"', Gender = '"+gender+"', AdmissionNo = '"+str(nadmno)+"', SchoolName = '"+sname+"' \
             WHERE StudentID = '"+StudID+"';")
+        packages.functions.db.commit()
     except IntegrityError:
         def ok():
             popup.destroy()
@@ -282,7 +317,8 @@ def s_update():
         okbutton = Button(popup, text="Ok", command=ok, width=20)
         okbutton.pack(pady=20)
         popup.mainloop()
-    packages.functions.db.commit()
+    finally:
+        cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
 
     stutree.delete(*stutree.get_children())
     cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
@@ -665,32 +701,6 @@ markstree.heading('6', text="Exam")
 markstree.heading('7', text="Subject")
 markstree.heading('8', text="Marks")
 markstree.heading('9', text="Total")
-
-cur.execute('SELECT a.Year, \
-    c.Name, \
-    se.Name, \
-    a.RollNo, \
-    st.Name, \
-    e.Name, \
-    su.Name, \
-    e.MarksObtained, \
-    e.TotalMarks \
-        FROM academics a \
-            INNER JOIN class c \
-                ON c.ClassID = a.ClassID \
-            INNER JOIN sections se \
-                ON se.SectionID = a.SectionID \
-            INNER JOIN student st \
-                ON st.StudentID = a.StudentID \
-            INNER JOIN subjects su \
-                ON su.SubjectID = a.SubjectID \
-            INNER JOIN exam e \
-                ON e.AcademicID = a.AcademicID \
-        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
-arow = cur.fetchall()
-
-for arw in arow:
-    markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
 
 markstree.bind("<ButtonRelease-1>", a_fetch)
 
