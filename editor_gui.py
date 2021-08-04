@@ -1,3 +1,4 @@
+from random import randint, random
 from tkinter import *
 from tkinter import font
 from tkinter.filedialog import asksaveasfile
@@ -66,146 +67,161 @@ def acasubmit():
     totalmarks = totalvar.get()
     exam = examvar.get()
 
-    classname = classname_raw.strip("()',")
-    section = section_raw.strip("()',")
-    subject = subject_raw.strip("'(),")
-
-    cur = packages.functions.db.cursor(buffered=True)
-
-    cur.execute('SELECT SubjectID FROM subjects WHERE Name = "' + subject + '";')
-    subjectid_raw = ''
-    for i in cur:
-        subjectid_raw = str(i)
-    subjectid = subjectid_raw.strip('(),')
-
-    cur = packages.functions.db.cursor(buffered=True)
-    
-    cur.execute('SELECT StudentID FROM student WHERE AdmissionNo = "'+admno+'";')
-    studentid_raw = ''
-    for i in cur:
-        studentid_raw = str(i)
-    studentid = studentid_raw.strip('(),')
-    
-    cur.execute('SELECT ClassID FROM class WHERE Name = "'+ classname +'";')
-    classid_raw = ''
-    for i in cur:
-        classid_raw = str(i)
-    classid = classid_raw.strip('(),')
-
-    cur.execute('SELECT SectionID FROM sections WHERE Name = "' + section + '";')
-    sectionid_raw = ''
-    for i in cur:
-        sectionid_raw = str(i)
-    sectionid = sectionid_raw.strip('(),')
-
-    sem_fail_integ = False
-    sem_fail_prog = False
-    mark_fail_integ = False
-    mark_fail_prog = False
-
-    try:
-        cur.execute('INSERT INTO academics (StudentID, Year, ClassID, SectionID, RollNo, SubjectID) \
-            VALUES ('+studentid+', '+year+', '+classid+', '+sectionid+', '+rollno+', '+subjectid+');')
-        packages.functions.db.commit()
-        sem_fail_integ = False
-        sem_fail_prog = False
-    except IntegrityError:
-        sem_fail_integ = True
-    except ProgrammingError:
-        sem_fail_prog = True
-    finally:
-        cur.execute('ALTER TABLE academics AUTO_INCREMENT=1')
-
-    cur.execute('SELECT AcademicID FROM academics WHERE \
-    StudentID='+studentid+' \
-    AND ClassID='+classid+' \
-    AND Year='+year+' \
-    AND SubjectID='+subjectid+';')
-
-    academicid_raw = ''
-    
-    for i in cur:
-        academicid_raw = str(i)
-    
-    academicid = academicid_raw.strip("'(),")
-
-    try:
-        cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) \
-            VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
-        packages.functions.db.commit()
-        mark_fail_integ = False
-        mark_fail_prog = False
-    except IntegrityError:
-        mark_fail_integ = True
-    except ProgrammingError:
-        mark_fail_prog = True
-    finally:
-        cur.execute('ALTER TABLE exam AUTO_INCREMENT=1')
-
-    if sem_fail_prog == False and mark_fail_prog == False and sem_fail_integ == False and mark_fail_integ == False:
-        pass
-
-    elif sem_fail_integ == True and mark_fail_integ == True:
+    if marksvar.get() > totalvar.get():
         popup = Tk()
         popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
+    
+        error = Label(popup, text="Total marks should be \n more than Obtained Marks", font=("Bahnschrift", 12), fg="#fb4934")
         error.place(x=8,y=25)
-
-        okbutton = Button(popup, text="Ok", command=close, width=10)
-        okbutton.place(x=85,y=90)
-    elif sem_fail_integ == True and mark_fail_integ == False:
-        pass
-    elif sem_fail_prog == True and mark_fail_prog == True:
-        popup = Tk()
-        popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
-        popup.geometry("255x150+572+340")
-        popup.title("Error!")
-        popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
-
-        error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
-        error.place(x=27,y=20)
-
+    
         okbutton = Button(popup, text="Ok", command=close, width=10)
         okbutton.place(x=85,y=90)
     else:
-        pass
-    
-    markstree.delete(*markstree.get_children())
-    
-    sItem = stutree.focus()
-    svalues = stutree.item(sItem)
-    
-    cur.execute('SELECT a.Year, \
-        c.Name, \
-        se.Name, \
-        a.RollNo, \
-        st.Name, \
-        e.Name, \
-        su.Name, \
-        e.MarksObtained, \
-        e.TotalMarks \
-        FROM academics a \
-            INNER JOIN class c \
-                ON c.ClassID = a.ClassID \
-            INNER JOIN sections se \
-                ON se.SectionID = a.SectionID \
-            INNER JOIN student st \
-                ON st.StudentID = a.StudentID \
-            INNER JOIN subjects su \
-                ON su.SubjectID = a.SubjectID \
-            INNER JOIN exam e \
-                ON e.AcademicID = a.AcademicID \
-        WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
-        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
-    
-    arow = cur.fetchall()
+        
 
-    for arw in arow:
-        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
+        classname = classname_raw.strip("()',")
+        section = section_raw.strip("()',")
+        subject = subject_raw.strip("'(),")
+    
+        cur = packages.functions.db.cursor(buffered=True)
+    
+        cur.execute('SELECT SubjectID FROM subjects WHERE Name = "' + subject + '";')
+        subjectid_raw = ''
+        for i in cur:
+            subjectid_raw = str(i)
+        subjectid = subjectid_raw.strip('(),')
+    
+        cur = packages.functions.db.cursor(buffered=True)
+        
+        cur.execute('SELECT StudentID FROM student WHERE AdmissionNo = "'+admno+'";')
+        studentid_raw = ''
+        for i in cur:
+            studentid_raw = str(i)
+        studentid = studentid_raw.strip('(),')
+        
+        cur.execute('SELECT ClassID FROM class WHERE Name = "'+ classname +'";')
+        classid_raw = ''
+        for i in cur:
+            classid_raw = str(i)
+        classid = classid_raw.strip('(),')
+    
+        cur.execute('SELECT SectionID FROM sections WHERE Name = "' + section + '";')
+        sectionid_raw = ''
+        for i in cur:
+            sectionid_raw = str(i)
+        sectionid = sectionid_raw.strip('(),')
+    
+        sem_fail_integ = False
+        sem_fail_prog = False
+        mark_fail_integ = False
+        mark_fail_prog = False
+    
+        try:
+            cur.execute('INSERT INTO academics (StudentID, Year, ClassID, SectionID, RollNo, SubjectID) \
+                VALUES ('+studentid+', '+year+', '+classid+', '+sectionid+', '+rollno+', '+subjectid+');')
+            packages.functions.db.commit()
+            sem_fail_integ = False
+            sem_fail_prog = False
+        except IntegrityError:
+            sem_fail_integ = True
+        except ProgrammingError:
+            sem_fail_prog = True
+        finally:
+            cur.execute('ALTER TABLE academics AUTO_INCREMENT=1')
+    
+        cur.execute('SELECT AcademicID FROM academics WHERE \
+        StudentID='+studentid+' \
+        AND ClassID='+classid+' \
+        AND Year='+year+' \
+        AND SubjectID='+subjectid+';')
+    
+        academicid_raw = ''
+        
+        for i in cur:
+            academicid_raw = str(i)
+        
+        academicid = academicid_raw.strip("'(),")
+    
+        try:
+            cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) \
+                VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
+            packages.functions.db.commit()
+            mark_fail_integ = False
+            mark_fail_prog = False
+        except IntegrityError:
+            mark_fail_integ = True
+        except ProgrammingError:
+            mark_fail_prog = True
+        finally:
+            cur.execute('ALTER TABLE exam AUTO_INCREMENT=1')
+    
+        if sem_fail_prog == False and mark_fail_prog == False and sem_fail_integ == False and mark_fail_integ == False:
+            pass
+    
+        elif sem_fail_integ == True and mark_fail_integ == True:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+    
+            error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+    
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        elif sem_fail_integ == True and mark_fail_integ == False:
+            pass
+        elif sem_fail_prog == True and mark_fail_prog == True:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+    
+            error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=27,y=20)
+    
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        else:
+            pass
+        
+        markstree.delete(*markstree.get_children())
+        
+        sItem = stutree.focus()
+        svalues = stutree.item(sItem)
+        
+        cur.execute('SELECT a.Year, \
+            c.Name, \
+            se.Name, \
+            a.RollNo, \
+            st.Name, \
+            e.Name, \
+            su.Name, \
+            e.MarksObtained, \
+            e.TotalMarks \
+            FROM academics a \
+                INNER JOIN class c \
+                    ON c.ClassID = a.ClassID \
+                INNER JOIN sections se \
+                    ON se.SectionID = a.SectionID \
+                INNER JOIN student st \
+                    ON st.StudentID = a.StudentID \
+                INNER JOIN subjects su \
+                    ON su.SubjectID = a.SubjectID \
+                INNER JOIN exam e \
+                    ON e.AcademicID = a.AcademicID \
+            WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+            ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+        
+        arow = cur.fetchall()
+    
+        for arw in arow:
+            markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
 
 def s_fetch(event):
     sItem = stutree.focus()
@@ -216,6 +232,8 @@ def s_fetch(event):
     admvar.set(svalues['values'][0])
     gendervar.set(svalues['values'][2])
     schoolname.set(svalues['values'][3])
+
+    
 
     cur.execute('SELECT a.Year, \
     c.Name, \
@@ -449,8 +467,11 @@ def pdf_gen():
         table_data.append(a)
     
     print(table_data)
-    #################################################################################################################################################
 
+
+#################################################################################################################################################
+
+    
     #Creating PDF Page
     
     #pdf_name = PDF_Name_Text.get() + '.pdf'
@@ -462,6 +483,8 @@ def pdf_gen():
     pdf.setTitle(title = 'pdf_gen' )
     pdf.setFont('Helvetica', 17)
     pdf.drawString(x = 26, y = 800, text = str(current_date))
+    pdf.drawString(x = 509, y = 800, text = (str(Student_ID[0]) + '-' + str(Classroom_Data[0]) + '-' + str(Classroom_Data[1]) + '-' +
+    str(Classroom_Data[2])))
     pdf.setFont('Helvetica-Bold', 20)
     pdf.drawString(x = 160, y = 800, text = School_txt.get())
     pdf.setLineWidth(4)
@@ -489,6 +512,7 @@ def pdf_gen():
         pdf.line(0,650,800,650)
         pdf.line(0,720,800,720)
         pdf.line(130, 1000, 130, 780)
+        pdf.line(490, 1000, 490, 780)
     dotted_lines(pdf)
         
     pdf.setDash(10000000,1)
@@ -501,7 +525,6 @@ def pdf_gen():
       ('FONTNAME', (0,0), (-1,-1), 'Helvetica-Bold'), \
       ('FONTSIZE', (0,0), (-1,-1), 12)])
     
-        
     table.wrapOn(pdf, 100, 400)
     table.drawOn(pdf, 20, 470)
     pdf.save()
@@ -509,6 +532,8 @@ def pdf_gen():
     print(updated_pdf_path)
 
 packages.functions.master_lists()
+
+        
 
 ### WINDOW ###
 
@@ -582,7 +607,7 @@ gendervar.set(' ')
 
 gender_lbl = Label(window, text = "Gender")
 gender_lbl.place(x = 65, y = 350)
-male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg)
+male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg,)
 male.place(x = 145, y = 349)
 
 female = Radiobutton(window, text = "Female",variable = gendervar, value = "Female", selectcolor = bg)
@@ -679,6 +704,8 @@ srow = cur.fetchall()
 for rw in srow:
     stutree.insert('','end',values=(rw[0],rw[1],rw[2],rw[3]))
 
+
+
 markstree = ttk.Treeview(window, columns=('1', '2', '3', '4', '5', '6', '7', '8', '9'), show='headings', height=13)
 markstree.place(x=373, y=405)
 
@@ -703,11 +730,7 @@ markstree.heading('8', text="Marks")
 markstree.heading('9', text="Total")
 
 markstree.bind("<ButtonRelease-1>", a_fetch)
-
-#markscrollbar = ttk.Scrollbar(window, orient="vertical", command=markstree.yview)
-#markscrollbar.place(x=946, y=406, height=250+35)
-
-#markstree.configure(yscrollcommand=markscrollbar.set)
+    
 
 submit_btn = Button(window, text="Submit", command=acasubmit)
 submit_btn.place(x=617, y=345)
