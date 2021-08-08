@@ -1,3 +1,4 @@
+from random import randint, random
 from tkinter import *
 from tkinter import font
 from tkinter.filedialog import asksaveasfile
@@ -136,20 +137,17 @@ def acasubmit():
             sem_fail_integ = True
         except ProgrammingError:
             sem_fail_prog = True
-
         cur.execute('SELECT AcademicID FROM academics WHERE \
         StudentID='+studentid+' \
         AND ClassID='+classid+' \
         AND Year='+year+' \
         AND SubjectID='+subjectid+';')
-
         academicid_raw = ''
         
         for i in cur:
             academicid_raw = str(i)
         
         academicid = academicid_raw.strip("'(),")
-
         try:
             cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) \
                 VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
@@ -571,8 +569,11 @@ def pdf_gen():
         table_data.append(a)
     
     print(table_data)
-    #################################################################################################################################################
 
+
+#################################################################################################################################################
+
+    
     #Creating PDF Page
     
     #pdf_name = PDF_Name_Text.get() + '.pdf'
@@ -584,6 +585,8 @@ def pdf_gen():
     pdf.setTitle(title = 'pdf_gen' )
     pdf.setFont('Helvetica', 17)
     pdf.drawString(x = 26, y = 800, text = str(current_date))
+    pdf.drawString(x = 509, y = 800, text = (str(Student_ID[0]) + '-' + str(Classroom_Data[0]) + '-' + str(Classroom_Data[1]) + '-' +
+    str(Classroom_Data[2])))
     pdf.setFont('Helvetica-Bold', 20)
     pdf.drawString(x = 160, y = 800, text = School_txt.get())
     pdf.setLineWidth(4)
@@ -611,6 +614,7 @@ def pdf_gen():
         pdf.line(0,650,800,650)
         pdf.line(0,720,800,720)
         pdf.line(130, 1000, 130, 780)
+        pdf.line(490, 1000, 490, 780)
     dotted_lines(pdf)
         
     pdf.setDash(10000000,1)
@@ -623,7 +627,6 @@ def pdf_gen():
       ('FONTNAME', (0,0), (-1,-1), 'Helvetica-Bold'), \
       ('FONTSIZE', (0,0), (-1,-1), 12)])
     
-        
     table.wrapOn(pdf, 100, 400)
     table.drawOn(pdf, 20, 470)
     pdf.save()
@@ -631,6 +634,8 @@ def pdf_gen():
     print(updated_pdf_path)
 
 packages.functions.master_lists()
+
+        
 
 ### WINDOW ###
 
@@ -708,7 +713,7 @@ gendervar.set(' ')
 
 gender_lbl = Label(window, text = "Gender")
 gender_lbl.place(x = 65, y = 350)
-male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg)
+male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg,)
 male.place(x = 145, y = 349)
 
 female = Radiobutton(window, text = "Female",variable = gendervar, value = "Female", selectcolor = bg)
