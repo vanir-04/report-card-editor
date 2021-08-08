@@ -43,14 +43,12 @@ def studentsubmit():
 
         okbutton = Button(popup, text="Ok", command=close, width=10)
         okbutton.place(x=85,y=90)
-    finally:
-        cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
     
     stutree.delete(*stutree.get_children())
-    cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
+    cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
     row = cur.fetchall()
     for rw in row:
-        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2],rw[3])) 
+        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2])) 
 
 def acasubmit():
     def close():
@@ -103,79 +101,270 @@ def acasubmit():
     mark_fail_integ = False
     mark_fail_prog = False
 
-    try:
-        cur.execute('INSERT INTO academics (StudentID, Year, ClassID, SectionID, RollNo, SubjectID) \
-            VALUES ('+studentid+', '+year+', '+classid+', '+sectionid+', '+rollno+', '+subjectid+');')
-        packages.functions.db.commit()
-        sem_fail_integ = False
-        sem_fail_prog = False
-    except IntegrityError:
-        sem_fail_integ = True
-    except ProgrammingError:
-        sem_fail_prog = True
-    finally:
-        cur.execute('ALTER TABLE academics AUTO_INCREMENT=1')
-
-    cur.execute('SELECT AcademicID FROM academics WHERE \
-    StudentID='+studentid+' \
-    AND ClassID='+classid+' \
-    AND Year='+year+' \
-    AND SubjectID='+subjectid+';')
-
-    academicid_raw = ''
-    
-    for i in cur:
-        academicid_raw = str(i)
-    
-    academicid = academicid_raw.strip("'(),")
-
-    try:
-        cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) \
-            VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
-        packages.functions.db.commit()
-        mark_fail_integ = False
-        mark_fail_prog = False
-    except IntegrityError:
-        mark_fail_integ = True
-    except ProgrammingError:
-        mark_fail_prog = True
-    finally:
-        cur.execute('ALTER TABLE exam AUTO_INCREMENT=1')
-
-    if sem_fail_prog == False and mark_fail_prog == False and sem_fail_integ == False and mark_fail_integ == False:
-        pass
-
-    elif sem_fail_integ == True and mark_fail_integ == True:
+    if int(marks) > int(totalmarks):
         popup = Tk()
         popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
 
-        error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
-        error.place(x=8,y=25)
+        error = Label(popup, text="Marks cannot be more\nthan the total.", font=("Bahnschrift", 17), fg="#fb4934")
+        error.place(relx=0.5,y=40, anchor=CENTER)
 
         okbutton = Button(popup, text="Ok", command=close, width=10)
         okbutton.place(x=85,y=90)
-    elif sem_fail_integ == True and mark_fail_integ == False:
-        pass
-    elif sem_fail_prog == True and mark_fail_prog == True:
+    elif int(marks) < 0:
         popup = Tk()
         popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
         popup.geometry("255x150+572+340")
         popup.title("Error!")
         popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
 
-        error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
-        error.place(x=27,y=20)
+        error = Label(popup, text="Marks cannot be\nnegative.", font=("Bahnschrift", 17), fg="#fb4934")
+        error.place(relx=0.5,y=40, anchor=CENTER)
 
         okbutton = Button(popup, text="Ok", command=close, width=10)
         okbutton.place(x=85,y=90)
     else:
-        pass
+        try:
+            cur.execute('INSERT INTO academics (StudentID, Year, ClassID, SectionID, RollNo, SubjectID) \
+                VALUES ('+studentid+', '+year+', '+classid+', '+sectionid+', '+rollno+', '+subjectid+');')
+            packages.functions.db.commit()
+            sem_fail_integ = False
+            sem_fail_prog = False
+        except IntegrityError:
+            sem_fail_integ = True
+        except ProgrammingError:
+            sem_fail_prog = True
+
+        cur.execute('SELECT AcademicID FROM academics WHERE \
+        StudentID='+studentid+' \
+        AND ClassID='+classid+' \
+        AND Year='+year+' \
+        AND SubjectID='+subjectid+';')
+
+        academicid_raw = ''
+        
+        for i in cur:
+            academicid_raw = str(i)
+        
+        academicid = academicid_raw.strip("'(),")
+
+        try:
+            cur.execute('INSERT INTO exam (AcademicID, Name, TotalMarks, MarksObtained, Year) \
+                VALUES ('+academicid+', "'+exam+'", '+totalmarks+', '+marks+', '+year+');')
+            packages.functions.db.commit()
+            mark_fail_integ = False
+            mark_fail_prog = False
+        except IntegrityError:
+            mark_fail_integ = True
+        except ProgrammingError:
+            mark_fail_prog = True
+
+        if sem_fail_prog == False and mark_fail_prog == False and sem_fail_integ == False and mark_fail_integ == False:
+            pass
+
+        elif sem_fail_integ == True and mark_fail_integ == True:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="Record already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        elif sem_fail_integ == True and mark_fail_integ == False:
+            pass
+        elif sem_fail_prog == True and mark_fail_prog == True:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="Student not found,\nplease add student", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=27,y=20)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        else:
+            pass
+        
+        markstree.delete(*markstree.get_children())
+        
+        sItem = stutree.focus()
+        svalues = stutree.item(sItem)
+        
+        cur.execute('SELECT a.Year, \
+            c.Name, \
+            se.Name, \
+            a.RollNo, \
+            e.Name, \
+            su.Name, \
+            e.MarksObtained, \
+            e.TotalMarks \
+            FROM academics a \
+                INNER JOIN class c \
+                    ON c.ClassID = a.ClassID \
+                INNER JOIN sections se \
+                    ON se.SectionID = a.SectionID \
+                INNER JOIN student st \
+                    ON st.StudentID = a.StudentID \
+                INNER JOIN subjects su \
+                    ON su.SubjectID = a.SubjectID \
+                INNER JOIN exam e \
+                    ON e.AcademicID = a.AcademicID \
+            WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+            ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+        
+        arow = cur.fetchall()
+
+        for arw in arow:
+            markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7]))
+
+def s_fetch(event):
+    sItem = stutree.focus()
+    svalues = stutree.item(sItem)
+    stuname = (svalues['values'][1]).split()
+    firstnamevar.set(stuname[0])
+    lastnamevar.set(stuname[1])
+    admvar.set(svalues['values'][0])
+    gendervar.set(svalues['values'][2])
+
+    cur.execute('SELECT a.Year, \
+        c.Name, \
+        se.Name, \
+        a.RollNo, \
+        e.Name, \
+        su.Name, \
+        e.MarksObtained, \
+        e.TotalMarks \
+        FROM academics a \
+            INNER JOIN class c \
+                ON c.ClassID = a.ClassID \
+            INNER JOIN sections se \
+                ON se.SectionID = a.SectionID \
+            INNER JOIN student st \
+                ON st.StudentID = a.StudentID \
+            INNER JOIN subjects su \
+                ON su.SubjectID = a.SubjectID \
+            INNER JOIN exam e \
+                ON e.AcademicID = a.AcademicID \
+        WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+
+    arow = cur.fetchall()
+
+    markstree.delete(*markstree.get_children())
+
+    for arw in arow:
+        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7]))
+
+def a_fetch(event):
+    aItem = markstree.focus()
+    avalues = markstree.item(aItem)
+    yearvar.set(avalues['values'][0])
+    classvar.set(avalues['values'][1])
+    sectionvar.set(avalues['values'][2])
+    rollvar.set(avalues['values'][3])
+    examvar.set(avalues['values'][4])
+    subvar.set(avalues['values'][5])
+    marksvar.set(avalues['values'][6])
+    totalvar.set(avalues['values'][7])
+
+def s_delete():
+    def close():
+        popupwarn.destroy()
+    
+    def confirm():
+        admno = admvar.get()
+        cur.execute('SELECT StudentID FROM student WHERE AdmissionNo = "'+str(admno)+'";')
+        admlist = cur.fetchone()
+        try:
+            cur.execute('DELETE FROM student WHERE AdmissionNo = "'+str(admno)+'";')
+            cur.execute('DELETE FROM academics WHERE StudentID = "'+str(admlist[0])+'";')
+            packages.functions.db.commit()
+            stutree.delete(*stutree.get_children())
+            cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
+            row = cur.fetchall()
+            for rw in row:
+                stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2]))
+            
+            markstree.delete(*markstree.get_children())
+        
+            sItem = stutree.focus()
+            svalues = stutree.item(sItem)
+            
+            cur.execute('SELECT a.Year, \
+                c.Name, \
+                se.Name, \
+                a.RollNo, \
+                e.Name, \
+                su.Name, \
+                e.MarksObtained, \
+                e.TotalMarks \
+                FROM academics a \
+                    INNER JOIN class c \
+                        ON c.ClassID = a.ClassID \
+                    INNER JOIN sections se \
+                        ON se.SectionID = a.SectionID \
+                    INNER JOIN student st \
+                        ON st.StudentID = a.StudentID \
+                    INNER JOIN subjects su \
+                        ON su.SubjectID = a.SubjectID \
+                    INNER JOIN exam e \
+                        ON e.AcademicID = a.AcademicID \
+                WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
+                ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
+            
+            arow = cur.fetchall()
+
+            for arw in arow:
+                markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7]))
+                
+        except:
+            pass
+        popupwarn.destroy()
+
+    popupwarn = Tk()  
+
+    popupwarn.iconbitmap(os.path.join(cwd,"assets/confirm.ico"))
+    popupwarn.geometry("255x150+572+340")
+    popupwarn.title("Confirmation")
+    popupwarn.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+    warninglbl = Label(popupwarn, text="Are you sure?\nThis will delete ALL\ndata for the student", font=("Bahnschrift", 14), fg="#fb4934")
+    warninglbl.place(relx=0.5,rely=0.3, anchor=CENTER)
+
+    okbutton = Button(popupwarn, text="Confirm", command=confirm, width=10)
+    okbutton.place(relx=0.7,rely=0.7, anchor=CENTER)
+
+    cnclbutton = Button(popupwarn, text="Cancel", command=close,width=10)
+    cnclbutton.place(relx=0.3,rely=0.7, anchor=CENTER)
+    popupwarn.mainloop()
+
+def a_delete():
+    admno = admvar.get()
+    cur.execute('SELECT StudentID FROM student WHERE AdmissionNo = "'+str(admno)+'";')
+    admlist = cur.fetchone()
+    classname = classvar.get()
+    cur.execute('SELECT ClassID FROM class WHERE Name = "'+str(classname)+'";')
+    classlist = cur.fetchone()
+    subname = subvar.get()
+    cur.execute('SELECT SubjectID FROM subjects WHERE Name = "'+str(subname)+'";')
+    sublist = cur.fetchone()
+    year = yearvar.get()
+    cur.execute('SELECT AcademicID from academics WHERE StudentID = "'+str(admlist[0])+'" AND ClassID = "'+str(classlist[0])+'" AND Year = "'+str(year)+'" AND SubjectID = "'+str(sublist[0])+'";')
+    a_idlist = cur.fetchone()
+    examname = examvar.get()
+    cur.execute('DELETE FROM exam WHERE AcademicID = "'+str(a_idlist[0])+'" AND Name = "'+str(examname)+'";')
+    packages.functions.db.commit()
     
     markstree.delete(*markstree.get_children())
-    
+
     sItem = stutree.focus()
     svalues = stutree.item(sItem)
     
@@ -183,7 +372,6 @@ def acasubmit():
         c.Name, \
         se.Name, \
         a.RollNo, \
-        st.Name, \
         e.Name, \
         su.Name, \
         e.MarksObtained, \
@@ -205,70 +393,7 @@ def acasubmit():
     arow = cur.fetchall()
 
     for arw in arow:
-        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
-
-def s_fetch(event):
-    sItem = stutree.focus()
-    svalues = stutree.item(sItem)
-    stuname = (svalues['values'][1]).split()
-    firstnamevar.set(stuname[0])
-    lastnamevar.set(stuname[1])
-    admvar.set(svalues['values'][0])
-    gendervar.set(svalues['values'][2])
-    schoolname.set(svalues['values'][3])
-
-    cur.execute('SELECT a.Year, \
-    c.Name, \
-    se.Name, \
-    a.RollNo, \
-    st.Name, \
-    e.Name, \
-    su.Name, \
-    e.MarksObtained, \
-    e.TotalMarks \
-        FROM academics a \
-            INNER JOIN class c \
-                ON c.ClassID = a.ClassID \
-            INNER JOIN sections se \
-                ON se.SectionID = a.SectionID \
-            INNER JOIN student st \
-                ON st.StudentID = a.StudentID \
-            INNER JOIN subjects su \
-                ON su.SubjectID = a.SubjectID \
-            INNER JOIN exam e \
-                ON e.AcademicID = a.AcademicID \
-        WHERE st.AdmissionNo = "'+str(svalues['values'][0])+'"\
-        ORDER BY a.Year, c.Name, se.Name, a.RollNo, e.Name, su.Name;')
-    arow = cur.fetchall()
-
-    markstree.delete(*markstree.get_children())
-
-    for arw in arow:
-        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7],arw[8]))
-
-def a_fetch(event):
-    aItem = markstree.focus()
-    avalues = markstree.item(aItem)
-    yearvar.set(avalues['values'][0])
-    classvar.set(avalues['values'][1])
-    sectionvar.set(avalues['values'][2])
-    rollvar.set(avalues['values'][3])
-    examvar.set(avalues['values'][5])
-    subvar.set(avalues['values'][6])
-    marksvar.set(avalues['values'][7])
-    totalvar.set(avalues['values'][8])
-
-def s_delete():
-    admno = admvar.get()
-    cur.execute('DELETE FROM student WHERE AdmissionNo = "'+admno+'";')
-    cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
-    packages.functions.db.commit()
-    
-    stutree.delete(*stutree.get_children())
-    cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
-    row = cur.fetchall()
-    for rw in row:
-        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2],rw[3])) 
+        markstree.insert('','end',values=(arw[0],arw[1],arw[2],arw[3],arw[4],arw[5],arw[6],arw[7]))
 
 def s_update():
     sItem = stutree.focus()
@@ -292,7 +417,6 @@ def s_update():
         popup.mainloop()
 
     nadmno = admvar.get()
-    sname = schoolname.get()
 
     cur = packages.functions.db.cursor(buffered=True)
     cur.execute("USE report_card_db;")
@@ -301,7 +425,7 @@ def s_update():
     StudID = str(cur.fetchone()).strip("(),")
 
     try:    
-        cur.execute("UPDATE student SET Name = '"+name+"', Gender = '"+gender+"', AdmissionNo = '"+str(nadmno)+"', SchoolName = '"+sname+"' \
+        cur.execute("UPDATE student SET Name = '"+name+"', Gender = '"+gender+"', AdmissionNo = '"+str(nadmno)+"' \
             WHERE StudentID = '"+StudID+"';")
         packages.functions.db.commit()
     except IntegrityError:
@@ -317,14 +441,12 @@ def s_update():
         okbutton = Button(popup, text="Ok", command=ok, width=20)
         okbutton.pack(pady=20)
         popup.mainloop()
-    finally:
-        cur.execute('ALTER TABLE student AUTO_INCREMENT=1')
 
     stutree.delete(*stutree.get_children())
-    cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
+    cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
     row = cur.fetchall()
     for rw in row:
-        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2],rw[3]))
+        stutree.insert('','end',iid=None,text="test",values=(rw[0],rw[1],rw[2]))
 
 def pdf_gen():
     ########################Fetching Table Data########################
@@ -518,14 +640,15 @@ window=Tk()
 canvas1 = Canvas()
 canvas1.config(width='1280', height='720')
 line1 = canvas1.create_line(360,60,360,768, fill='#458588', width=2)
-line2 = canvas1.create_line(0,60,1366,60, fill='#fb4934', width=3)
+line2 = canvas1.create_line(910,60,910,768, fill='#458588', width=2)
+line3 = canvas1.create_line(0,60,1366,60, fill='#fb4934', width=3)
 canvas1.pack()
 
 # Set Window Configurations
 defaultFont = font.nametofont("TkDefaultFont")
 defaultFont.configure(family="Tw Cen MT", size=13)
 window.title('Editor')
-window.iconbitmap(os.path.join(cwd,'assets/edit.ico'))
+window.iconbitmap(os.path.join(cwd,'assets/book.ico'))
 window.geometry("1280x720+30+0")
 window.tk_setPalette(background="#282828", foreground="#ebdbb2")
 window.resizable(0, 0)
@@ -540,21 +663,24 @@ current_date = date.today()
 
 # Title
 title = Label(window, text="Student Marksheet", fg = "#b8bb26", font = ("Bahnschrift",30))
-title.place(x=470,y=29)
+title.place(relx=0.5,rely=0.075, anchor=CENTER)
 
 # Headers
 acad_lbl = Label(window, text="Academic Data", font=("Bahnschrift",20))
-acad_lbl.place(x=545, y=100)
+acad_lbl.place(relx=0.5, y=118, anchor=CENTER)
 
-data_lbl = Label(window, text="Student Data", font = ("Bahnschrift",20))
-data_lbl.place(x = 103, y = 100) 
+stud_lbl = Label(window, text="Student Data", font = ("Bahnschrift",20))
+stud_lbl.place(x = 103, y = 100) 
+
+pdf_lbl = Label(window, text="Create PDF", font = ("Bahnschrift",20))
+pdf_lbl.place(x = 1027, y = 100) 
 
 ## STUDENT INFO ##
 # School Name
 School_lbl = Label(window, text = "School Name")
 School_lbl.place(x = 45, y = 150)
 schoolname = StringVar()
-School_txt = Entry(window, textvariable=schoolname,selectbackground=fg, selectforeground=bg, justify='center', width=30 )
+School_txt = Entry(window, textvariable=schoolname,selectbackground=fg, selectforeground=bg, justify='center', width=30)
 School_txt.place(x = 145, y = 152)
 
 # Student Details
@@ -588,12 +714,15 @@ male.place(x = 145, y = 349)
 female = Radiobutton(window, text = "Female",variable = gendervar, value = "Female", selectcolor = bg)
 female.place(x = 225, y = 349)
 
-# Submit button
-addstudent_btn = Button(window, text = "Add", command = studentsubmit)
+# Student section buttons
+addstudent_btn = Button(window, text = "Add", command = studentsubmit, width=7, fg="#b8bb26")
 addstudent_btn.place(x=140,y = 400)
 
-delstudent_btn = Button(window, text = "Delete", command=s_delete)
-delstudent_btn.place(x=190,y = 400)
+update_btn = Button(window, text = "Update", command = s_update, width=7, fg="#83a598")
+update_btn.place(x = 60, y = 400)
+
+delstudent_btn = Button(window, text = "Delete", command=s_delete, width=7, fg="#fb4934")
+delstudent_btn.place(x=220, y = 400)
 
 ## ADDING/EDITING EXAM RESULTS ##
 
@@ -655,65 +784,63 @@ totalvar = StringVar()
 total_mks = Entry(window, textvariable=totalvar, width=3, selectbackground=fg, selectforeground=bg, justify='center')
 total_mks.place(x=530,y=354)
 
-#reset_btn = Button(window, text = "Reset", command = reset)
-#reset_btn.place(x=450,y = 440)
-
-stutree = ttk.Treeview(window, columns=('0', '1', '2', '3'), show='headings')
-stutree.place(x=10, y=465)
+stutree = ttk.Treeview(window, columns=('0', '1', '2'), show='headings', height=8)
+stutree.place(x=12, y=465)
 
 stutree.column('0', width=100, anchor=CENTER)
-stutree.column('1', width=100, anchor=CENTER)
+stutree.column('1', width=140, anchor=CENTER)
 stutree.column('2', width=80, anchor=CENTER)
-stutree.column('3', width=80, anchor=CENTER)
 
 stutree.heading('0', text="Admission No.")
 stutree.heading('1', text="Name")
 stutree.heading('2', text="Gender")
-stutree.heading('3', text="School Name")
 
 stutree.bind("<ButtonRelease-1>", s_fetch)
 
+stuscrollbar = ttk.Scrollbar(window, orient="vertical", command=stutree.yview)
+stuscrollbar.place(x=10+321, y=465, height=160+27)
+
+stutree.configure(yscrollcommand=stuscrollbar.set)
+
 cur = packages.functions.db.cursor()
-cur.execute("SELECT AdmissionNo, Name, Gender, SchoolName FROM student")
+cur.execute("SELECT AdmissionNo, Name, Gender FROM student")
 srow = cur.fetchall()
 for rw in srow:
-    stutree.insert('','end',values=(rw[0],rw[1],rw[2],rw[3]))
+    stutree.insert('','end',values=(rw[0],rw[1],rw[2]))
 
-markstree = ttk.Treeview(window, columns=('1', '2', '3', '4', '5', '6', '7', '8', '9'), show='headings', height=13)
+markstree = ttk.Treeview(window, columns=('1', '2', '3', '4', '5', '6', '7', '8'), show='headings', height=11)
 markstree.place(x=373, y=405)
+
+markstree.bind("<ButtonRelease-1>", a_fetch)
+
+markscrollbar = ttk.Scrollbar(window, orient="vertical", command=markstree.yview)
+markscrollbar.place(x=880, y=405, height=247)
+
+markstree.configure(yscrollcommand=markscrollbar.set)
 
 markstree.column('1', width=50, anchor=CENTER)
 markstree.column('2', width=40, anchor=CENTER)
 markstree.column('3', width=50, anchor=CENTER)
 markstree.column('4', width=50, anchor=CENTER)
-markstree.column('5', width=130, anchor=CENTER)
-markstree.column('6', width=90, anchor=CENTER)
-markstree.column('7', width=150, anchor=CENTER)
-markstree.column('8', width=40, anchor=CENTER)
-markstree.column('9', width=35, anchor=CENTER)
+markstree.column('5', width=90, anchor=CENTER)
+markstree.column('6', width=150, anchor=CENTER)
+markstree.column('7', width=40, anchor=CENTER)
+markstree.column('8', width=35, anchor=CENTER)
 
 markstree.heading('1', text="Year")
 markstree.heading('2', text="Class")
 markstree.heading('3', text="Section")
 markstree.heading('4', text="Roll No.")
-markstree.heading('5', text="Name")
-markstree.heading('6', text="Exam")
-markstree.heading('7', text="Subject")
-markstree.heading('8', text="Marks")
-markstree.heading('9', text="Total")
+markstree.heading('5', text="Exam")
+markstree.heading('6', text="Subject")
+markstree.heading('7', text="Marks")
+markstree.heading('8', text="Total")
 
-markstree.bind("<ButtonRelease-1>", a_fetch)
+submit_btn = Button(window, text="Add", command=acasubmit, width=7, fg="#b8bb26")
+submit_btn.place(x=570, y=345)
 
-#markscrollbar = ttk.Scrollbar(window, orient="vertical", command=markstree.yview)
-#markscrollbar.place(x=946, y=406, height=250+35)
-
-#markstree.configure(yscrollcommand=markscrollbar.set)
-
-submit_btn = Button(window, text="Submit", command=acasubmit)
-submit_btn.place(x=617, y=345)
-    
-update_btn = Button(window, text = "Update", command = s_update)
-update_btn.place(x = 40, y = 400)
+acadelete_btn = Button(window, text="Delete", command=a_delete, width=7, fg="#fb4934")
+acadelete_btn.place(x=650, y=345)
 
 pdf_gen_btn = Button(window, text = "Create PDF", command = pdf_gen)
 pdf_gen_btn.place(x=955, y=200)
