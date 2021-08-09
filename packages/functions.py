@@ -139,25 +139,25 @@ def cli_login():
 # Creates a list with data from the database
 
 def master_lists():
+    db = mysql.connector.connect(host='localhost', user="test", password="")
     cur = db.cursor(buffered=True)
-    
-    global sublist, classlist, sectionlist
+
+    global sublist, classlist, sectionlist, schoollist
+    schoollist = []
     sublist = []
     classlist = []
     sectionlist = []
 
     cur.execute("USE report_card_db;")
-    cur.execute("SELECT Name FROM subjects;")
     
-    for i in cur:
-        sublist.append(i)
+    cur.execute("SELECT Name FROM subjects;")
+    sublist = cur.fetchall()
 
     cur.execute("SELECT Name FROM class;")
-    
-    for i in cur:
-        classlist.append(i)
-    
-    cur.execute("SELECT Name FROM sections;")
+    classlist = cur.fetchall()
 
-    for i in cur:
-        sectionlist.append(i)
+    cur.execute("SELECT Name FROM sections;")
+    sectionlist = cur.fetchall()
+    
+    cur.execute("SELECT Name FROM schools;")
+    schoollist = cur.fetchall()

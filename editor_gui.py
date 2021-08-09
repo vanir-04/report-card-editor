@@ -1,4 +1,3 @@
-from random import randint, random
 from tkinter import *
 from tkinter import font
 from tkinter.filedialog import asksaveasfile
@@ -569,9 +568,7 @@ def pdf_gen():
         table_data.append(a)
     
     print(table_data)
-
-
-#################################################################################################################################################
+ #################################################################################################################################################
 
     
     #Creating PDF Page
@@ -633,9 +630,409 @@ def pdf_gen():
     print("PDF Report File has been created")
     print(updated_pdf_path)
 
-packages.functions.master_lists()
+def adminmode():
 
+    # Functions #
+
+    def sch_add():
+        def close():
+            popup.destroy()
+
+        school = schooltxt.get()
         
+        try:
+            cur.execute("USE report_card_db;")
+        
+            cur.execute('INSERT INTO schools (Name) \
+                VALUES ("'+school+'");')
+            packages.functions.db.commit()
+        except:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="School already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        
+        schooltree.delete(*schooltree.get_children())
+        packages.functions.master_lists()
+        for i in packages.functions.schoollist:
+            schooltree.insert('','end',values=(i))
+
+    def sch_delete():
+        def close():
+            popupwarn.destroy()
+        
+        def confirm():
+            school = schooltxt.get()
+            try:
+                cur.execute('DELETE FROM student WHERE SchoolName = "'+str(school)+'";')
+                cur.execute('DELETE FROM schools WHERE Name = "'+str(school)+'";')
+                packages.functions.db.commit()
+                schooltree.delete(*schooltree.get_children())
+                packages.functions.master_lists()
+                for i in packages.functions.schoollist:
+                    schooltree.insert('','end',values=(i))
+                    
+            except:
+                pass
+            popupwarn.destroy()
+
+        popupwarn = Tk()  
+
+        popupwarn.iconbitmap(os.path.join(cwd,"assets/confirm.ico"))
+        popupwarn.geometry("255x150+572+340")
+        popupwarn.title("Confirmation")
+        popupwarn.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        warninglbl = Label(popupwarn, text="Are you sure?\nThis will delete ALL\ndata for the school", font=("Bahnschrift", 14), fg="#fb4934")
+        warninglbl.place(relx=0.5,rely=0.3, anchor=CENTER)
+
+        okbutton = Button(popupwarn, text="Confirm", command=confirm, width=10)
+        okbutton.place(relx=0.7,rely=0.7, anchor=CENTER)
+
+        cnclbutton = Button(popupwarn, text="Cancel", command=close,width=10)
+        cnclbutton.place(relx=0.3,rely=0.7, anchor=CENTER)
+        popupwarn.mainloop()
+
+
+    def class_add():
+        def close():
+            popup.destroy()
+
+        classname = classtxt.get()
+        
+        try:
+            cur.execute("USE report_card_db;")
+        
+            cur.execute('INSERT INTO class (Name) \
+                VALUES ("'+str(classname)+'");')
+            packages.functions.db.commit()
+            classvar.set("None")
+            classdrop['menu'].delete(0, 'end')
+            for c in packages.functions.classlist:
+                classdrop['menu'].add_command(label=c)
+        except:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="Class already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        
+        classtree.delete(*classtree.get_children())
+        packages.functions.master_lists()
+        for i in packages.functions.classlist:
+            classtree.insert('','end',values=(i))
+
+    def class_delete():
+        def close():
+            popupwarn.destroy()
+        
+        def confirm():
+            classname = classtxt.get()
+            try:
+                
+                cur.execute('DELETE FROM class WHERE Name = "'+str(classname)+'";')
+                packages.functions.db.commit()
+                classtree.delete(*classtree.get_children())
+                packages.functions.master_lists()
+                for i in packages.functions.classlist:
+                    classtree.insert('','end',values=(i))
+                classvar.set("None")
+                classdrop['menu'].delete(0, 'end')
+                for c in packages.functions.classlist:
+                    classdrop['menu'].add_command(label=c)
+                    
+            except:
+                pass
+            popupwarn.destroy()
+
+        popupwarn = Tk()  
+
+        popupwarn.iconbitmap(os.path.join(cwd,"assets/confirm.ico"))
+        popupwarn.geometry("255x150+572+340")
+        popupwarn.title("Confirmation")
+        popupwarn.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        warninglbl = Label(popupwarn, text="Are you sure?\nThis will delete ALL\ndata for the class", font=("Bahnschrift", 14), fg="#fb4934")
+        warninglbl.place(relx=0.5,rely=0.3, anchor=CENTER)
+
+        okbutton = Button(popupwarn, text="Confirm", command=confirm, width=10)
+        okbutton.place(relx=0.7,rely=0.7, anchor=CENTER)
+
+        cnclbutton = Button(popupwarn, text="Cancel", command=close,width=10)
+        cnclbutton.place(relx=0.3,rely=0.7, anchor=CENTER)
+        popupwarn.mainloop()
+
+    def section_add():
+        def close():
+            popup.destroy()
+
+        sectionname = sectiontxt.get()
+        
+        try:
+            cur.execute("USE report_card_db;")
+        
+            cur.execute('INSERT INTO sections (Name) \
+                VALUES ("'+str(sectionname)+'");')
+            packages.functions.db.commit()
+            sectionvar.set("None")
+            sectiondrop['menu'].delete(0, 'end')
+            for s in packages.functions.sectionlist:
+                sectiondrop['menu'].add_command(label=s)
+        except:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="Section already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        
+        sectiontree.delete(*sectiontree.get_children())
+        packages.functions.master_lists()
+        for i in packages.functions.sectionlist:
+            sectiontree.insert('','end',values=(i))
+
+    def section_delete():
+        def close():
+            popupwarn.destroy()
+        
+        def confirm():
+            sectionname = sectiontxt.get()
+            try:
+                
+                cur.execute('DELETE FROM section WHERE Name = "'+str(sectionname)+'";')
+                packages.functions.db.commit()
+                sectiontree.delete(*sectiontree.get_children())
+                packages.functions.master_lists()
+                for i in packages.functions.sectionlist:
+                    sectiontree.insert('','end',values=(i))
+                sectionvar.set("None")
+                sectiondrop['menu'].delete(0, 'end')
+                for s in packages.functions.sectionlist:
+                    sectiondrop['menu'].add_command(label=s)
+                    
+            except:
+                pass
+            popupwarn.destroy()
+
+        popupwarn = Tk()  
+
+        popupwarn.iconbitmap(os.path.join(cwd,"assets/confirm.ico"))
+        popupwarn.geometry("255x150+572+340")
+        popupwarn.title("Confirmation")
+        popupwarn.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+        warninglbl = Label(popupwarn, text="Are you sure?\nThis will delete ALL\ndata for the Section", font=("Bahnschrift", 14), fg="#fb4934")
+        warninglbl.place(relx=0.5,rely=0.3, anchor=CENTER)
+
+        okbutton = Button(popupwarn, text="Confirm", command=confirm, width=10)
+        okbutton.place(relx=0.7,rely=0.7, anchor=CENTER)
+
+        cnclbutton = Button(popupwarn, text="Cancel", command=close,width=10)
+        cnclbutton.place(relx=0.3,rely=0.7, anchor=CENTER)
+        popupwarn.mainloop()
+
+    def sub_add():
+        def close():
+            popup.destroy()
+
+        subjectname = subtxt.get()
+        
+        try:
+            cur.execute("USE report_card_db;")
+        
+            cur.execute('INSERT INTO subjects (Name) \
+                VALUES ("'+str(subjectname)+'");')
+            packages.functions.db.commit()
+            subvar.set("None")
+            subject_drop['menu'].delete(0, 'end')
+            for su in packages.functions.sublist:
+                subject_drop['menu'].add_command(label=su)
+        except:
+            popup = Tk()
+            popup.iconbitmap(os.path.join(cwd,"assets/error.ico"))
+            popup.geometry("255x150+572+340")
+            popup.title("Error!")
+            popup.tk_setPalette(background="#282828", foreground="#ebdbb2")
+
+            error = Label(popup, text="Subject already exists", font=("Bahnschrift", 17), fg="#fb4934")
+            error.place(x=8,y=25)
+
+            okbutton = Button(popup, text="Ok", command=close, width=10)
+            okbutton.place(x=85,y=90)
+        
+        subtree.delete(*subtree.get_children())
+        packages.functions.master_lists()
+        for i in packages.functions.sublist:
+            subtree.insert('','end',values=(i))
+
+    def sub_delete():
+        pass
+
+    def sch_fetch(event):
+        schItem = schooltree.focus()
+        schvalues = schooltree.item(schItem)
+        schooltxt.delete(0, END)
+        schooltxt.insert(0, schvalues['values'][0])
+
+    def c_fetch(event):
+        classItem = classtree.focus()
+        classvalues = classtree.item(classItem)
+        classtxt.delete(0, END)
+        classtxt.insert(0, classvalues['values'][0])
+
+    def sec_fetch(event):
+        secItem = section.focus()
+        secvalues = sectiontree.item(secItem)
+        sectiontxt.delete(0, END)
+        sectiontxt.insert(0, secvalues['values'][0])
+
+    # Initialization #
+
+    admin = Tk()
+
+    packages.functions.master_lists()
+    cwd = os.path.dirname(os.path.abspath(__file__))
+
+    admincanvas = Canvas(admin)
+    admincanvas.config(width='920', height='450')
+    line1 = admincanvas.create_line(230,50,230,768, fill='#458588', width=2)
+    line2 = admincanvas.create_line(462,50,462,768, fill='#458588', width=2)
+    line3 = admincanvas.create_line(694,50,694,768, fill='#458588', width=2)
+    line4 = admincanvas.create_line(0,50,1366,50, fill='#fb4934', width=3)
+    admincanvas.pack()
+
+    defaultFont = font.nametofont("TkDefaultFont")
+    defaultFont.configure(family="Tw Cen MT", size=13)
+    defaultFont = font.nametofont("TkDefaultFont")
+    defaultFont.configure(family="Tw Cen MT", size=13)
+    admin.title('Admin')
+    admin.iconbitmap(os.path.join(cwd,'assets/admin.ico'))
+    admin.geometry("920x450")
+    admin.tk_setPalette(background="#282828", foreground="#ebdbb2")
+    admin.resizable(0, 0)
+
+    title = Label(admin, text="Admin Mode", fg = "#b8bb26", font = ("Bahnschrift",30))
+    title.place(relx=0.5, rely=0.1, anchor=CENTER)
+
+    # Schools #
+
+    schools = Label(admin, text="Schools", fg=fg, font=("Bahnschrift",23))
+    schools.place(relx=0.125, rely=0.2, anchor=CENTER)
+    
+    schooltxt = Entry(admin, text="", selectbackground=fg, selectforeground=bg, justify='center', width=30)
+    schooltxt.place(relx=0.123, rely=0.3, anchor=CENTER)
+
+    addschool = Button(admin, text="Add", command=sch_add, width=7, fg="#b8bb26")
+    addschool.place(relx=0.075, rely=0.393, anchor=CENTER)
+
+    delschool = Button(admin, text="Delete", command=sch_delete, width=7, fg="#fb4934")
+    delschool.place(relx=0.175, rely=0.393, anchor=CENTER)
+
+    schooltree = ttk.Treeview(admin, columns=('0'), show='headings', height=10)
+    schooltree.place(relx=0.123, rely=0.72, anchor=CENTER)
+
+    schooltree.column('0', width=200, anchor=CENTER)
+    schooltree.heading('0', text="School Name")
+
+    for i in packages.functions.schoollist:
+        schooltree.insert('','end',values=(i))
+    
+    schooltree.bind("<ButtonRelease-1>", sch_fetch)
+    # Classes #
+
+    classes = Label(admin, text="Classes", fg=fg, font=("Bahnschrift",23))
+    classes.place(relx=0.378, rely=0.2, anchor=CENTER)
+
+    classtxt = Entry(admin, text="", selectbackground=fg, selectforeground=bg, justify='center', width=30)
+    classtxt.place(relx=0.376, rely=0.3, anchor=CENTER)
+
+    addclass = Button(admin, text="Add", command=class_add, width=7, fg="#b8bb26")
+    addclass.place(relx=0.328, rely=0.393, anchor=CENTER)
+
+    delclass = Button(admin, text="Delete", command=class_delete, width=7, fg="#fb4934")
+    delclass.place(relx=0.428, rely=0.393, anchor=CENTER)
+
+    classtree = ttk.Treeview(admin, columns=('0'), show='headings', height=10)
+    classtree.place(relx=0.376, rely=0.72, anchor=CENTER)
+
+    classtree.column('0', width=200, anchor=CENTER)
+    classtree.heading('0', text="Class")
+
+    for i in packages.functions.classlist:
+        classtree.insert('','end',values=(i))
+
+    classtree.bind("<ButtonRelease-1>", c_fetch)
+
+    # Sections #
+
+    sections = Label(admin, text="Sections", fg=fg, font=("Bahnschrift",23))
+    sections.place(relx=0.631, rely=0.2, anchor=CENTER)
+
+    sectiontxt = Entry(admin, text="", selectbackground=fg, selectforeground=bg, justify='center', width=30)
+    sectiontxt.place(relx=0.629, rely=0.3, anchor=CENTER)
+
+    addsection = Button(admin, text="Add", command=section_add, width=7, fg="#b8bb26")
+    addsection.place(relx=0.581, rely=0.393, anchor=CENTER)
+
+    delsection = Button(admin, text="Delete", command=section_delete, width=7, fg="#fb4934")
+    delsection.place(relx=0.681, rely=0.393, anchor=CENTER)
+
+    sectiontree = ttk.Treeview(admin, columns=('0'), show='headings', height=10)
+    sectiontree.place(relx=0.629, rely=0.72, anchor=CENTER)
+
+    sectiontree.column('0', width=200, anchor=CENTER)
+    sectiontree.heading('0', text="Section")
+
+    for i in packages.functions.sectionlist:
+        sectiontree.insert('','end',values=(i))
+    
+    classtree.bind("<ButtonRelease-1>", c_fetch)
+
+    # Subjects #
+
+    subjects = Label(admin, text="Subjects", fg=fg, font=("Bahnschrift",23))
+    subjects.place(relx=0.880, rely=0.2, anchor=CENTER)
+
+    subvar = StringVar()
+    subtxt = Entry(admin, textvariable=subvar, selectbackground=fg, selectforeground=bg, justify='center', width=30)
+    subtxt.place(relx=0.878, rely=0.3, anchor=CENTER)
+
+    addsub = Button(admin, text="Add", command=sub_add, width=7, fg="#b8bb26")
+    addsub.place(relx=0.830, rely=0.393, anchor=CENTER)
+
+    delsub = Button(admin, text="Delete", command=sub_delete, width=7, fg="#fb4934")
+    delsub.place(relx=0.930, rely=0.393, anchor=CENTER)
+
+    subtree = ttk.Treeview(admin, columns=('0'), show='headings', height=10)
+    subtree.place(relx=0.878, rely=0.72, anchor=CENTER)
+
+    subtree.column('0', width=200, anchor=CENTER)
+    subtree.heading('0', text="Subject")
+
+    for i in packages.functions.sublist:
+        subtree.insert('','end',values=(i))
+
+    admin.mainloop()
+
+packages.functions.master_lists()     
 
 ### WINDOW ###
 
@@ -713,18 +1110,18 @@ gendervar.set(' ')
 
 gender_lbl = Label(window, text = "Gender")
 gender_lbl.place(x = 65, y = 350)
-male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg,)
+male = Radiobutton(window, text ="Male",variable = gendervar, value = "Male", selectcolor = bg)
 male.place(x = 145, y = 349)
 
 female = Radiobutton(window, text = "Female",variable = gendervar, value = "Female", selectcolor = bg)
 female.place(x = 225, y = 349)
 
 # Student section buttons
-addstudent_btn = Button(window, text = "Add", command = studentsubmit, width=7, fg="#b8bb26")
-addstudent_btn.place(x=140,y = 400)
-
 update_btn = Button(window, text = "Update", command = s_update, width=7, fg="#83a598")
 update_btn.place(x = 60, y = 400)
+
+addstudent_btn = Button(window, text = "Add", command = studentsubmit, width=7, fg="#b8bb26")
+addstudent_btn.place(x=140,y = 400)
 
 delstudent_btn = Button(window, text = "Delete", command=s_delete, width=7, fg="#fb4934")
 delstudent_btn.place(x=220, y = 400)
@@ -736,7 +1133,7 @@ class_lbl.place(x = 415, y = 203)
 
 classvar= StringVar()
 classvar.set("None")
-classdrop = OptionMenu(window, classvar,  *packages.functions.classlist)
+classdrop = OptionMenu(window, classvar, *packages.functions.classlist)
 classdrop.place(x = 475, y = 200)
 
 roll_lbl = Label(window, text = "Roll No.")
@@ -847,13 +1244,10 @@ submit_btn.place(x=570, y=345)
 acadelete_btn = Button(window, text="Delete", command=a_delete, width=7, fg="#fb4934")
 acadelete_btn.place(x=650, y=345)
 
+admin_mode = Button(window, text="Admin Mode", command=adminmode, width=15)
+admin_mode.place(relx=0.5, rely=0.955, anchor=CENTER)
+
 pdf_gen_btn = Button(window, text = "Create PDF", command = pdf_gen)
 pdf_gen_btn.place(x=955, y=200)
-
-#PDF_Name = Label(window, text = 'Name of PDF :')
-#PDF_Name.place(x = 950, y  = 150)
-#PDF_Variable = StringVar()
-#PDF_Name_Text = Entry(window, textvariable=PDF_Variable, selectbackground=fg, selectforeground=bg, justify='center')
-#PDF_Name_Text.place(x = 1050, y = 150)
 
 window.mainloop()

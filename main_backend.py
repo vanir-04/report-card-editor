@@ -13,7 +13,7 @@ except:
 
 # Check for existence of database and create it if not found
 
-sub_exist, class_exist, stu_exist, aca_exist, exam_exist, section_exist = False, False, False, False, False, False
+sub_exist, class_exist, stu_exist, aca_exist, exam_exist, section_exist, school_exist = False, False, False, False, False, False, False
 
 cur.execute("SHOW DATABASES;")
 
@@ -51,12 +51,14 @@ for i in cur:
         exam_exist = True
     elif 'sections' in i:
         section_exist = True
+    elif 'schools' in i:
+        school_exist = True
     else:
         continue
 
 y = 0
 
-while y <= 5:
+while y <= 6:
     if sub_exist != True:
         print("Subjects table not found, creating...")
         
@@ -91,7 +93,7 @@ while y <= 5:
         print("Class table not found, creating...")
         
         cur2.execute("CREATE TABLE class(\
-            ClassID int,\
+            ClassID int AUTO_INCREMENT,\
             Name varchar(255),\
             PRIMARY KEY (ClassID)\
             );")
@@ -100,10 +102,10 @@ while y <= 5:
         class_exist = True
         y = y + 1
 
-        cur2.execute("INSERT INTO class (ClassID, Name)\
+        cur2.execute("INSERT INTO class (Name)\
                 VALUES \
-                    (11, 'XI'),\
-                    (12, 'XII');")
+                    ('XI'),\
+                    ('XII');")
     elif section_exist != True:
         print("Sections table not found, creating...")
         
@@ -175,6 +177,19 @@ while y <= 5:
         
         print("Exam table created.")
         exam_exist = True
+        y = y + 1
+
+    elif school_exist != True:
+        print("School table not found, creating...")
+
+        cur2.execute("CREATE TABLE schools(\
+            SchoolID int AUTO_INCREMENT,\
+            Name varchar(255) UNIQUE,\
+            PRIMARY KEY (SchoolID)\
+            );")
+        
+        print("School table created.")
+        school_exist = True
         y = y + 1
 
     else:
