@@ -1,4 +1,4 @@
-## Report Card Editor
+# Report Card Editor
 
 An application to edit and view all the student report cards you desire. This is DPSI Group 1's CS Project for the session 2021-22.
 
@@ -10,7 +10,8 @@ An application to edit and view all the student report cards you desire. This is
 
 ## Features
 
-- Add, view, and delete Student and Academic data from the GUI.
+- Manage Student and Academic data from the GUI.
+- Create a report card for a student
 
 ## Dependencies
 
@@ -24,5 +25,7 @@ An application to edit and view all the student report cards you desire. This is
 
 ## To-do
 
-- Create report card creation process.
-- Create update function for student data and academic data.
+- ~~Create report card creation process.~~
+- ~~Create update function for student data and academic data.~~
+- ~~Add an admin mode.~~
+- Refine report card creation.
