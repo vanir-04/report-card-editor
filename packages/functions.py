@@ -142,11 +142,12 @@ def master_lists():
     db = mysql.connector.connect(host='localhost', user="test", password="")
     cur = db.cursor(buffered=True)
 
-    global sublist, classlist, sectionlist, schoollist
+    global sublist, classlist, sectionlist, schoollist, passlist
     schoollist = []
     sublist = []
     classlist = []
     sectionlist = []
+    passlist = []
 
     cur.execute("USE report_card_db;")
     
@@ -161,3 +162,6 @@ def master_lists():
     
     cur.execute("SELECT Name FROM schools;")
     schoollist = cur.fetchall()
+
+    cur.execute("SELECT Password FROM admin;")
+    passlist = cur.fetchall()

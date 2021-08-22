@@ -13,7 +13,7 @@ except:
 
 # Check for existence of database and create it if not found
 
-sub_exist, class_exist, stu_exist, aca_exist, exam_exist, section_exist, school_exist = False, False, False, False, False, False, False
+sub_exist, class_exist, stu_exist, aca_exist, exam_exist, section_exist, school_exist, admin_exist = False, False, False, False, False, False, False, False
 
 cur.execute("SHOW DATABASES;")
 
@@ -53,12 +53,14 @@ for i in cur:
         section_exist = True
     elif 'schools' in i:
         school_exist = True
+    elif 'admin' in i:
+        admin_exist = True
     else:
         continue
 
 y = 0
 
-while y <= 6:
+while y <= 7:
     if sub_exist != True:
         print("Subjects table not found, creating...")
         
@@ -187,11 +189,24 @@ while y <= 6:
             Name varchar(255) UNIQUE,\
             PRIMARY KEY (SchoolID)\
             );")
-        
+
+        cur2.execute("INSERT INTO schools (Name)\
+            VALUES \
+                ('Default');")
+
         print("School table created.")
         school_exist = True
         y = y + 1
 
+    elif admin_exist != True:
+        print("Admin table not found, creating...")
+        cur2.execute("CREATE TABLE admin(\
+            Password char(60),\
+            PRIMARY KEY (Password)\
+            );")
+        print("Admin table created.")
+        admin_exist = True
+        y = y + 1
     else:
         print("All tables found.")
         break
