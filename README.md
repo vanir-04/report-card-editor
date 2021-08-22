@@ -18,10 +18,11 @@ An application to edit and view all the student report cards you desire. This is
 - Python3
 - Tkinter
 - MySQL
+- bcrypt
 
 ## To run the ``Report Card Editor``, please follow below steps -
 
-- Clone the repository and run `editor_gui.py`
+- Clone the repository and run `start.py`
 
 ## To-do
 
