@@ -4,7 +4,22 @@ import bcrypt
 import main_backend
 import packages.functions
 import os
+import sys
+import subprocess
+import pkg_resources
 
+required = {'bcrypt', 'datetime', 'reportlab'}
+installed = {pkg.key for pkg in pkg_resources.working_set}
+missing = required - installed
+
+if missing:
+    python = sys.executable
+    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    print("Required Modules have now been downloaded")
+else:
+    print("Required Modules exists.")
+    
+    
 cur = packages.functions.db.cursor(buffered=True)
 packages.functions.master_lists()
 cwd = os.path.dirname(os.path.abspath(__file__))
