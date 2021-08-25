@@ -139,7 +139,6 @@ def cli_login():
 # Creates a list with data from the database
 
 def master_lists():
-    db = mysql.connector.connect(host='localhost', user="test", password="")
     cur = db.cursor(buffered=True)
 
     global sublist, classlist, sectionlist, schoollist, passlist
