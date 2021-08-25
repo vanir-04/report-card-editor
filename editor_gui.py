@@ -589,11 +589,14 @@ def pdf_gen():
 
     
     #Creating PDF Page
-    
+    global updated_pdf_path
     #pdf_name = PDF_Name_Text.get() + '.pdf'
     filetype = [('PDF File', '*.pdf')]
     filename = asksaveasfile(filetypes=filetype, defaultextension=filetype)
     updated_pdf_path = filename.name
+    name_of_file = updated_pdf_path.split('/')
+    pdflabel = Label(window, text = name_of_file[-1])
+    pdflabel.place(x = 1020, y = 425)
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
     pdf.drawImage((os.path.join(cwd,'assets/LightBlue_Background.png')), 0, 0, 1000, 1000)
     pdf.setTitle(title = 'pdf_gen' )
@@ -602,7 +605,7 @@ def pdf_gen():
     pdf.drawString(x = 509, y = 800, text = (str(Student_ID[0]) + '-' + str(Classroom_Data[0]) + '-' + str(Classroom_Data[1]) + '-' +
     str(Classroom_Data[2])))
     pdf.setFont('Helvetica-Bold', 20)
-    pdf.drawString(x = 160, y = 800, text = schooldrop.get())
+    pdf.drawString(x = 160, y = 800, text = schoolvar.get())
     pdf.setLineWidth(4)
     pdf.line(0, 780, 700, 780)
     pdf.setFont('Helvetica', 16)
@@ -645,7 +648,10 @@ def pdf_gen():
     table.drawOn(pdf, 20, 470)
     pdf.save()
     print("PDF Report File has been created")
-    print(updated_pdf_path)
+
+    
+def pdf_file_viewer():
+    os.startfile(updated_pdf_path)
 
 def adminpassmenu():
     def admpasscheck():
@@ -1396,5 +1402,15 @@ examdropvar.set('None')
 examlist = ['']
 examdrop = OptionMenu(window, examdropvar, *[str(i).strip("}{(,)'") for i in examlist])
 examdrop.place(x=955, y=280)
+
+
+#PDF Viewer#
+initial_pdf_lbl = Label(window, text = "Open PDF -> ")
+initial_pdf_lbl.place(x = 950, y = 365)
+img = PhotoImage(file = os.path.join(cwd,'assets/PDF_icon.png'))
+pdf_icon_image = img.zoom(30)
+pdf_icon_image = img.subsample(2)    
+pdf_view_btn = Button(window, height = 65, width = 50, image = pdf_icon_image, command = lambda : pdf_file_viewer())
+pdf_view_btn.place(x = 1050, y = 350)
 
 window.mainloop()
