@@ -8,24 +8,24 @@ import sys
 import subprocess
 import pkg_resources
 
-required = {'bcrypt', 'datetime', 'reportlab'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
 
-if missing:
+required_modules = {'bcrypt', 'datetime', 'reportlab'}
+installed_modules = {pkg.key for pkg in pkg_resources.working_set}
+missing_modules = required_modules - installed_modules
+
+if missing_modules:
     python = sys.executable
-    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    subprocess.check_call([python, '-m', 'pip', 'install', *missing_modules], stdout=subprocess.DEVNULL)
     print("Required Modules have now been downloaded")
 else:
     print("Required Modules exists.")
-    
-    
+
 cur = packages.functions.db.cursor(buffered=True)
 packages.functions.master_lists()
 cwd = os.path.dirname(os.path.abspath(__file__))
 
 if len(packages.functions.passlist) == 0:
-    def showpass():
+    def showpass(): 
         current_char = pwd.cget('show')
         if current_char == '*':
             pwd.config(show='')
