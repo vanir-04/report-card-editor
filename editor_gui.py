@@ -638,7 +638,7 @@ def pdf_gen():
     pdf.drawString(60, 620, text = 'Exam :')
     pdf.drawString(108, 620, text = examdropvar.get())
     pdf.drawString(400, 620, text = 'Session:')
-    year_difference = int(yeardropvar.get()) - 1
+    year_difference = int(yeardropvar.get()) + 1
     session_year = str(yeardropvar.get()) + "-" + str(year_difference)
     pdf.drawString(462, 620, text = session_year)
     def dotted_lines(pdf):
