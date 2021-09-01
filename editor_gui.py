@@ -570,6 +570,11 @@ def pdf_gen():
             Marks_Obtained.append(i)
     Marks_Obtained.insert(0, 'Marks Scored')
     print(Marks_Obtained)
+
+    Marks_Obtained_Number  = 0
+    for j in range(1, len(Marks_Obtained)):
+        Marks_Obtained_Number += int(Marks_Obtained[j])
+
     for y in AcademicID:
         Statement_101 = ('SELECT TotalMarks FROM exam WHERE AcademicID = ')    
         Statement_101_Query = Statement_101  + str(y)
@@ -578,13 +583,22 @@ def pdf_gen():
         for [i] in Total:
             Total_Marks.append(i)
     Total_Marks.insert(0,'Max. Marks')
-    print(Total_Marks)  
+    print(Total_Marks)
     
-    table_data = []
+    Total_Marks_Number = 0
+    for w in range(1, len(Total_Marks)):
+        Total_Marks_Number += int(Total_Marks[w])
+    
+    print(Marks_Obtained_Number)
+    print(Total_Marks_Number)
+
+    marks_table_data = []
     for a in (Subjects, Marks_Obtained, Total_Marks):
-        table_data.append(a)
+        marks_table_data.append(a)
     
-    print(table_data)
+    print(marks_table_data)
+
+    signature_table_data = [["Parent's Signature", "Student's Signature", "Principal's Signature"]]
     #################################################################################################################################################
 
     
@@ -598,12 +612,9 @@ def pdf_gen():
     pdflabel = Label(window, text = name_of_file[-1])
     pdflabel.place(x = 1020, y = 425)
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
-    pdf.drawImage((os.path.join(cwd,'assets/LightBlue_Background.png')), 0, 0, 1000, 1000)
     pdf.setTitle(title = 'pdf_gen' )
     pdf.setFont('Helvetica', 17)
     pdf.drawString(x = 26, y = 800, text = str(current_date))
-    pdf.drawString(x = 509, y = 800, text = (str(Student_ID[0]) + '-' + str(Classroom_Data[0]) + '-' + str(Classroom_Data[1]) + '-' +
-    str(Classroom_Data[2])))
     pdf.setFont('Helvetica-Bold', 20)
     pdf.drawString(x = 160, y = 800, text = schoolvar.get())
     pdf.setLineWidth(4)
@@ -624,28 +635,68 @@ def pdf_gen():
     pdf.drawString(460, 700, text = Student_Data[2])
     pdf.drawString(400, 660, text = 'Roll No. :')
     pdf.drawString(462, 660, text = str(Classroom_Data[2]))
+    pdf.drawString(60, 620, text = 'Exam :')
+    pdf.drawString(108, 620, text = examdropvar.get())
+    pdf.drawString(400, 620, text = 'Session:')
+    year_difference = int(yeardropvar.get()) - 1
+    session_year = str(yeardropvar.get()) + "-" + str(year_difference)
+    pdf.drawString(462, 620, text = session_year)
     def dotted_lines(pdf):
         pdf.setDash(1, 1) 
+        pdf.line(0,610, 800, 610)
         pdf.line(0, 684, 800, 684)
-        pdf.line(300, 650, 300, 720)
+        pdf.line(300, 610, 300, 720)
         pdf.line(0,650,800,650)
         pdf.line(0,720,800,720)
         pdf.line(130, 1000, 130, 780)
-        pdf.line(490, 1000, 490, 780)
     dotted_lines(pdf)
-        
+    
+    scored_marks = str(Marks_Obtained_Number) + "/" + str(Total_Marks_Number)
+    pdf.drawString(50, 320, text = "Total Marks :")
+    pdf.drawString(135, 320, text = scored_marks)
+    Net_Marks = (Marks_Obtained_Number / Total_Marks_Number)*100
+    percentage = round(Net_Marks, 2)
+    percentage_text = "Total Percentage :  " + str(percentage) + str("%")
+    pdf.drawString(50, 300, text = percentage_text)
+
+    if percentage >= 33 :
+        pdf.drawString(50, 280, text = "Result :")
+        pdf.drawString(105, 280, text = "PASS")
+    else:
+        pdf.drawString(50, 280, text = "Result :")
+        pdf.drawString(105, 280, text = "FAIL")
+    
+    
+    
+    marks_row_height = [50,50,50]
     pdf.setDash(10000000,1)
-    table = Table(table_data)
+    table = Table(marks_table_data, rowHeights = marks_row_height)
     table.setStyle([ \
     ('GRID', (0,0), (0, -1), 2, colors.black),
     ('GRID', (0, 0), (-1, -1), 0.5 ,colors.black), \
     ('TEXTCOLOR', (0,0), (-1, -1), colors.black), \
-    ('ALIGN', (0,0,), (-1, -1), 'LEFT'), \
+    ('ALIGN', (0,0,), (-1, -1), 'CENTER'), \
+    ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), \
     ('FONTNAME', (0,0), (-1,-1), 'Helvetica-Bold'), \
-    ('FONTSIZE', (0,0), (-1,-1), 12)])
+    ('FONTSIZE', (0,0), (-1,-1), 11)])
     
     table.wrapOn(pdf, 100, 400)
-    table.drawOn(pdf, 20, 470)
+    table.drawOn(pdf, 20, 390)
+
+    sign_col_width = [198, 198, 198]
+    sign_row_height = [100]
+    sign_table = Table(signature_table_data, sign_col_width, sign_row_height)
+    sign_table.setStyle([ \
+    ('GRID', (0,0), (3,1), 1, colors.black), \
+    ('TEXTCOLOR', (0,0), (3, 1), colors.black), \
+    ('ALIGN', (0,0), (3,1), 'CENTER'), \
+    ('VALIGN', (0,0,), (3, 1), 'TOP'), \
+    ('FONTNAME', (0,0), (3,1), 'Helvetica'), \
+    ('FONTSIZE', (0,0), (3, 1), 12)])
+    
+    sign_table.wrapOn(pdf, 100, 400)
+    sign_table.drawOn(pdf, 0, 0)
+
     pdf.save()
     print("PDF Report File has been created")
 
