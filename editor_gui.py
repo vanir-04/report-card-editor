@@ -467,18 +467,19 @@ def pdf_gen():
     sItem = stutree.focus()
     svalues = stutree.item(sItem)
     admno = svalues['values'][0]
+    year = yeardropvar.get()
     Student_ID = []
     cur.execute("select studentID from student where AdmissionNo = '" +str(admno)+ "'; ")
     Student_ = cur.fetchall()
     for [i] in Student_:
         Student_ID.append(i)
-    print(Student_ID[0])
+    print(Student_ID)
     
     #####SUBJECTS#####
-    Subject_ID_Statement = ('SELECT SubjectID FROM Academics WHERE StudentID = ')
-    Subject_ID_Query = Subject_ID_Statement + str(Student_ID[0])
+    Subject_ID_Query = (" SELECT SubjectID FROM Academics WHERE StudentID = '"+str(Student_ID[0])+"' AND Year = '" +str(year)+ "' ")
     cur.execute(Subject_ID_Query)
     Subject_Data = cur.fetchall()
+    print(Subject_Data)
     SubjectID = []
     Subs = []
     Subs1 = []
@@ -514,8 +515,7 @@ def pdf_gen():
     print(Student_Data)
     
     #####Class, Section, Roll No.#####
-    Class_Statement = ('SELECT DISTINCT ClassID, SectionID, RollNo FROM Academics WHERE StudentID = ')
-    Class_Query = Class_Statement + str(Student_ID[0])
+    Class_Query = (" SELECT DISTINCT ClassID, SectionID, RollNo FROM Academics WHERE StudentID ='"+str(Student_ID[0])+"'  AND Year = '"+str(year)+"' ")
     cur.execute(Class_Query)
     List1 = cur.fetchall()
     Classroom_Data = []
@@ -550,8 +550,7 @@ def pdf_gen():
     
     #####MARKS AND EXAM#####
     AcademicID = []
-    Academic_ID_Collection = ('SELECT AcademicID FROM Academics WHERE StudentID = ')
-    Academic_ID_Query = Academic_ID_Collection + str(Student_ID[0])
+    Academic_ID_Query = ("SELECT AcademicID FROM Academics WHERE StudentID ='"+str(Student_ID[0])+"' AND Year ='"+str(year)+"' ")
     cur.execute(Academic_ID_Query)
     Academic = cur.fetchall()
     for [i] in Academic:
@@ -668,7 +667,7 @@ def pdf_gen():
     
     
     
-    marks_row_height = [50,50,50]
+    marks_row_height = [30,30,30]
     pdf.setDash(10000000,1)
     table = Table(marks_table_data, rowHeights = marks_row_height)
     table.setStyle([ \
