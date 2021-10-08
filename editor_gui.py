@@ -14,7 +14,6 @@ from reportlab.platypus import Table
 from reportlab.pdfgen import canvas
 
 cur = packages.functions.db.cursor(buffered=True)
-print("function name",__name__)
 packages.functions.master_lists()
 cwd = os.path.dirname(os.path.abspath(__file__))
 
