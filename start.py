@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 import bcrypt
 import main_backend
+print('function name is', __name__)
 import packages.functions
 import os
 import sys

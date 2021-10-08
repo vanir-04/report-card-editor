@@ -14,6 +14,7 @@ from reportlab.platypus import Table
 from reportlab.pdfgen import canvas
 
 cur = packages.functions.db.cursor(buffered=True)
+print("function name",__name__)
 packages.functions.master_lists()
 cwd = os.path.dirname(os.path.abspath(__file__))
 
@@ -609,8 +610,6 @@ def pdf_gen():
     filename = asksaveasfile(filetypes=filetype, defaultextension=filetype)
     updated_pdf_path = filename.name
     name_of_file = updated_pdf_path.split('/')
-    pdflabel = Label(window, text = name_of_file[-1])
-    pdflabel.place(x = 1020, y = 425)
     pdf = canvas.Canvas(updated_pdf_path, pagesize = A4 )
     pdf.setTitle(title = 'pdf_gen' )
     pdf.setFont('Helvetica', 17)
@@ -698,8 +697,10 @@ def pdf_gen():
     sign_table.drawOn(pdf, 0, 0)
 
     pdf.save()
+    pdflabel = Label(window, text = name_of_file[-1])
+    pdflabel.place(x = 1020, y = 425)
+    pdf_view_btn['state'] = 'normal'
     print("PDF Report File has been created")
-
     
 def pdf_file_viewer():
     os.startfile(updated_pdf_path)
@@ -1266,8 +1267,8 @@ acad_lbl.place(relx=0.5, y=118, anchor=CENTER)
 stud_lbl = Label(window, text="Student Data", font = ("Bahnschrift",20))
 stud_lbl.place(x = 103, y = 100) 
 
-pdf_lbl = Label(window, text="Create PDF", font = ("Bahnschrift",20))
-pdf_lbl.place(x = 1027, y = 100) 
+pdf_lbl = Label(window, text="Generate PDF", font = ("Bahnschrift",20))
+pdf_lbl.place(x = 1010, y = 100) 
 
 ## STUDENT INFO ##
 # School Name
@@ -1439,29 +1440,37 @@ acadelete_btn.place(x=650, y=345)
 admin_mode = Button(window, text="Admin Mode", command=adminpassmenu, width=15)
 admin_mode.place(relx=0.5, rely=0.955, anchor=CENTER)
 
+# Generating PDF
+
 pdf_gen_btn = Button(window, text = "Create PDF", command = pdf_gen)
-pdf_gen_btn.place(x=955, y=200)
+pdf_gen_btn.place(x=1050, y=300)
+
+yeardrop_lbl = Label(window, text="Year", font=('Tw Cen MT', 12))
+yeardrop_lbl.place(x=1025, y=205)
 
 yeardropvar = StringVar()
 yeardropvar.set("None")
 yearlist = ['']
 yeardrop = OptionMenu(window, yeardropvar, *[str(i).strip("}{(,)'") for i in yearlist], command=examchng)
-yeardrop.place(x=955, y=240)
+yeardrop.place(x=1070, y=200)
+
+examdrop_lbl = Label(window, text='Exam', font=('Tw Cen MT', 12))
+examdrop_lbl.place(x=1025,y=245)
 
 examdropvar = StringVar()
 examdropvar.set('None')
 examlist = ['']
 examdrop = OptionMenu(window, examdropvar, *[str(i).strip("}{(,)'") for i in examlist])
-examdrop.place(x=955, y=280)
+examdrop.place(x=1070, y=240)
 
+# PDF Viewer
 
-#PDF Viewer#
-initial_pdf_lbl = Label(window, text = "Open PDF -> ")
-initial_pdf_lbl.place(x = 950, y = 365)
-img = PhotoImage(file = os.path.join(cwd,'assets/PDF_icon.png'))
-pdf_icon_image = img.zoom(30)
-pdf_icon_image = img.subsample(2)    
-pdf_view_btn = Button(window, height = 65, width = 50, image = pdf_icon_image, command = lambda : pdf_file_viewer())
-pdf_view_btn.place(x = 1050, y = 350)
+#initial_pdf_lbl = Label(window, text = "Open PDF -> ")
+#initial_pdf_lbl.place(x = 950, y = 365)
+pdfimg = PhotoImage(file = os.path.join(cwd,'assets/pdf.png'))   
+pdf_view_btn = Button(window, image = pdfimg, command = lambda : pdf_file_viewer(), borderwidth=0)
+pdf_view_btn.place(x = 1077, y = 360)
+
+pdf_view_btn['state'] = 'disable'
 
 window.mainloop()
