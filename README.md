@@ -29,4 +29,4 @@ An application to edit and view all the student report cards you desire. This is
 - ~~Create report card creation process.~~
 - ~~Create update function for student data and academic data.~~
 - ~~Add an admin mode.~~
-- Refine report card creation.
+- ~~Refine report card creation.~~
